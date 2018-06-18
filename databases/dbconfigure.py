@@ -30,11 +30,11 @@ class DbConfigure:
         bRet = True
         try:
             fp = open(CONFIG_FILE_NAME, "w")
-            fp.writelines(self.__dbclass + os.linesep)
-            fp.writelines(self.__module + os.linesep)
-            fp.writelines(self.__host + os.linesep)
-            fp.writelines(self.__id + os.linesep)
-            fp.writelines(self.__pw + os.linesep)
+            fp.writelines(self.__dbclass + "\n")
+            fp.writelines(self.__module + "\n")
+            fp.writelines(self.__host + "\n")
+            fp.writelines(self.__id + "\n")
+            fp.writelines(self.__pw + "\n")
         except:
             bRet = False
         else:

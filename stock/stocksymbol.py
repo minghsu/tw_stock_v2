@@ -3,7 +3,6 @@
 
 from multiprocessing import Queue
 from . fetchsymbol import FetchSymbol
-
 from constant.stock import RetriveType
 
 # URL for List & OTC company
