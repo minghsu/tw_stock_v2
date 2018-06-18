@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+
+from enum import Enum, unique
+
+
+@unique
+class StockDB(Enum):
+    STR_DATABASE_NAME = "tw_stock"
+    STR_STOCK_SYMBOL_TABLE_NAME = "stock_symbol"
+
+
+@unique
+class RetriveType(Enum):
+    DATA = 0
+    INFO = 1
+
+
+@unique
+class SymbolField(Enum):
+    IDX_SYMBOL = 0
+    IDX_NAME = 1
+    IDX_CREATE_DATE = 2
+    IDX_UPDATED_DATE = 3
