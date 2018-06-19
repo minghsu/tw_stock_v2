@@ -8,7 +8,7 @@ DICT_STR_RESOURCE = {
     "STR_CLI_PREFIX": "TW STOCK [%s] >",
     "STR_CLI_NONE": "None",
     "STR_VERSION": "TW STOCK Version %d.%d",
-    "STR_UNKNOWN_COMMAND": "Unkonwn command",
+    "STR_UNKNOWN_COMMAND": "Unkonwn command or invalid parameter!",
     "STR_DB_CONNECT_ERROR": "Can't connected to database, please help to check the configurations.",
     "STR_CONFIG_DATABASE": ("The database connection info is configurating.\n"
                             "Please follow the indicate to provide the HOST, ID & PW info.\n"
@@ -40,5 +40,5 @@ DICT_STR_RESOURCE = {
                          "      fetch [symbol] > Fetch the historical closing information\n"
                          "      analyze > Display all supported technical analysis and current setting\n"
                          "      add [type] > Set which technical analysis will be execute.\n"
-                         "      remove[type] > Remove exist technical analysis.\n")
+                         "      remove[type] > Remove exist technical analysis.\n"),
 }

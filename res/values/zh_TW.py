@@ -8,7 +8,7 @@ DICT_STR_RESOURCE = {
     "STR_CLI_PREFIX": "TW STOCK [%s] >",
     "STR_CLI_NONE": "未指定",
     "STR_VERSION": "TW STOCK 版本 %d.%d",
-    "STR_UNKNOWN_COMMAND": "無法理解的指令",
+    "STR_UNKNOWN_COMMAND": "無法理解的指令或是不正確的參數!",
     "STR_DB_CONNECT_ERROR": "無法連接資料庫，請確認設定值是否正確?",
     "STR_CONFIG_DATABASE": ("資料庫連線資訊設定作業，請依指示提供伺服器位址，帳號與密碼。\n"
                             "請確保該帳密有建立資料庫和資料表的權限，系統將自行產生相關資料。\n"
@@ -39,5 +39,5 @@ DICT_STR_RESOURCE = {
                          "      fetch [symbol] > 下載股票收盤資料\n"
                          "      analyze > 顯示已支援的技術分析, 以及目前已設定的狀態\n"
                          "      add [analyze type] > 設定要執行的技術分析\n"
-                         "      remove [analyze type] > 移除要執行的技術分析")
+                         "      remove [analyze type] > 移除要執行的技術分析"),
 }

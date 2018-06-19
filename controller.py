@@ -29,6 +29,7 @@ class controller:
         self.__consoles = consoles(self.__strFactory)
         self.__state = State.Startup
         self.__strCmd = None
+        self.__parameter = None
 
     def do_job(self):
         for case in Switch(self.__state):
@@ -178,13 +179,23 @@ class controller:
             if case(State.Input):
                 self.__strCmd = self.__consoles.getCommand()
                 self.__strCmd = self.__strCmd.lower()
-                self.__state = commander.cmdParser(self.__strCmd)
+                self.__state, self.__parameter = commander.cmdParser(
+                    self.__strCmd)
                 break
-            if case(State.Help):
+            if case(State.CmdHelp):
                 viewer.empty_string()
                 viewer.string(
                     self.__strFactory.get_string('STR_HELP_MESSAGE'))
                 self.__state = State.Input
                 viewer.empty_string()
+                break
+            if case(State.CmdError):
+                viewer.warning_string(
+                    self.__strFactory.get_string('STR_UNKNOWN_COMMAND'))
+                self.__state = State.Input
+                break
+            if case(State.CmdUse):
+                self.__consoles.set_used_symbol(self.__parameter)
+                self.__state = State.Input
                 break
         return True

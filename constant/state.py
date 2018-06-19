@@ -35,4 +35,8 @@ class State(Enum):
     # Downloading the stock symbol data
     Downloading = 13
     # show help message
-    Help = 14
+    CmdHelp = 14
+    # command error
+    CmdError = 15
+    # use command
+    CmdUse = 16

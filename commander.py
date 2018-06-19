@@ -7,7 +7,8 @@ from utils.switch import Switch
 
 def cmdParser(argCommand):
 
-    retState = State.Input
+    retState = State.CmdError
+    retParameter = None
 
     splitCmd = argCommand.split(" ")
 
@@ -16,10 +17,15 @@ def cmdParser(argCommand):
             retState = State.Exit
             break
         if case("help"):
-            retState = State.Help
+            retState = State.CmdHelp
             break
         if case("config"):
             retState = State.Configure
             break
+        if case("use"):
+            if (len(splitCmd) > 1):
+                retParameter = splitCmd[1]
+                retState = State.CmdUse
+            break
 
-    return retState
+    return (retState, retParameter)

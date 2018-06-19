@@ -60,5 +60,5 @@ class consoles:
             elif (inputKey == "N" or inputKey == "n"):
                 return False
 
-    def set_used_stock(self, arg_symbol):
+    def set_used_symbol(self, arg_symbol):
         self.__used = arg_symbol
