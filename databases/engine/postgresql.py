@@ -23,11 +23,11 @@ class postgresql(BaseSQL):
     def __init__(self):
         super().__init__(DICT_POSTGRESQL_CMD)
 
-    def __connect(self, argDb, argHost, argId, argPw):
+    def __connect(self, arg_db, arg_host, arg_id, arg_pw):
         bRet = True
         try:
             self.connection = self.dbEngine.connect(
-                dbname=argDb, user=argId, password=argPw, host=argHost)
+                dbname=arg_db, user=arg_id, password=arg_pw, host=arg_host)
         except:
             bRet = False
 
@@ -39,13 +39,13 @@ class postgresql(BaseSQL):
     def dependency(self):
         return ['psycopg2']
 
-    def initial(self, argDbClass):
-        self.dbEngine = __import__(argDbClass)
+    def initial(self, arg_db_class):
+        self.dbEngine = __import__(arg_db_class)
 
-    def connect(self, argHost, argId, argPw):
-        self.__Host = argHost
-        self.__Id = argId
-        self.__Pw = argPw
+    def connect(self, arg_host, arg_id, arg_pw):
+        self.__Host = arg_host
+        self.__Id = arg_id
+        self.__Pw = arg_pw
 
         if (self.__connect(DEF_PSQL_SYS_DB_NAME, self.__Host, self.__Id, self.__Pw)):
             # enable the isolation_level auto commit

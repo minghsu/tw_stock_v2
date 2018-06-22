@@ -30,14 +30,14 @@ class mysql(BaseSQL):
     def dependency(self):
         return ['MySQLdb', 'pymysql']
 
-    def initial(self, argDbClass):
-        self.dbEngine = __import__(argDbClass)
+    def initial(self, arg_db_class):
+        self.dbEngine = __import__(arg_db_class)
 
-    def connect(self, argHost, argId, argPw):
+    def connect(self, arg_host, arg_id, arg_pw):
         bRet = True
         try:
             self.connection = self.dbEngine.connect(
-                host=argHost, user=argId, passwd=argPw, charset='utf8')
+                host=arg_host, user=arg_id, passwd=arg_pw, charset='utf8')
             return super(mysql, self).create_database()
         except:
             bRet = False

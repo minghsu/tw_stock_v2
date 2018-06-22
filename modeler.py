@@ -3,7 +3,7 @@
 
 from databases.dbfactory import DbFactory
 from constant.stock import SymbolField, StockDB
-from utils.utility import IsSymbolExist
+from utils.utility import util_is_symbol_exist
 
 DICT_SQL_CMD = {
     "SQL_CMD_FETCH_ALL_SYMBOL_INFO": ("SELECT symbol, name, create_date, update_date FROM "
@@ -24,8 +24,8 @@ class modeler:
     def get_db_module_list(self):
         return self.__dbFactory.get_db_module_list()
 
-    def connect(self, argDbClass, argModule, argHost, argId, argPw):
-        return self.__dbFactory.connect(argDbClass, argModule, argHost, argId, argPw)
+    def connect(self, arg_db_class, arg_module, arg_host, arg_id, arg_pw):
+        return self.__dbFactory.connect(arg_db_class, arg_module, arg_host, arg_id, arg_pw)
 
     def close(self):
         self.__dbFactory.close()
@@ -46,18 +46,28 @@ class modeler:
     def get_symbol_count(self):
         return self.__SymbolCount
 
-    def update_stock_symbol(self, argSymbolItem, argUpdateDate):
+    def update_stock_symbol(self, arg_symbol_item, arg_update_date):
         strSqlCmd = ""
-        if (IsSymbolExist(self.__SymbolInfoList, argSymbolItem[SymbolField.IDX_SYMBOL.value]) == None):
+        if (util_is_symbol_exist(self.__SymbolInfoList, arg_symbol_item[SymbolField.IDX_SYMBOL.value]) == None):
             strSqlCmd = DICT_SQL_CMD['SQL_CMD_INSERT_STOCK_SYMBOL'] % (
-                argSymbolItem[SymbolField.IDX_SYMBOL.value],
-                argSymbolItem[SymbolField.IDX_NAME.value],
-                argSymbolItem[SymbolField.IDX_CREATE_DATE.value],
-                argUpdateDate)
+                arg_symbol_item[SymbolField.IDX_SYMBOL.value],
+                arg_symbol_item[SymbolField.IDX_NAME.value],
+                arg_symbol_item[SymbolField.IDX_CREATE_DATE.value],
+                arg_update_date)
         else:
             strSqlCmd = DICT_SQL_CMD['SQL_CMD_UPDATE_STOCK_SYMBOL'] % (
-                argUpdateDate,
-                argSymbolItem[SymbolField.IDX_SYMBOL.value])
+                arg_update_date,
+                arg_symbol_item[SymbolField.IDX_SYMBOL.value])
 
         self.__dbFactory.execute(strSqlCmd)
         self.__dbFactory.commit()
+
+    def is_symbol_exist(self, arg_symbol):
+        return util_is_symbol_exist(self.__SymbolInfoList, arg_symbol)
+
+    def get_symbol_info(self, arg_symbol):
+        idx = self.is_symbol_exist(arg_symbol)
+        if (idx != None):
+            return self.__SymbolInfoList[idx]
+
+        return None

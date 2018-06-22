@@ -41,4 +41,6 @@ DICT_STR_RESOURCE = {
                          "      analyze > Display all supported technical analysis and current setting\n"
                          "      add [type] > Set which technical analysis will be execute.\n"
                          "      remove[type] > Remove exist technical analysis.\n"),
+    "STR_SYMBOL_NOT_FOUND": "Can't found the %s stock symbol ...",
+    "STR_SYMBOL_INFO": " >>> Symbol: %s, Name: %s, Listed Date: %s, Last Update: %s",
 }

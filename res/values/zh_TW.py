@@ -40,4 +40,6 @@ DICT_STR_RESOURCE = {
                          "      analyze > 顯示已支援的技術分析, 以及目前已設定的狀態\n"
                          "      add [analyze type] > 設定要執行的技術分析\n"
                          "      remove [analyze type] > 移除要執行的技術分析"),
+    "STR_SYMBOL_NOT_FOUND": "查無 %s 股票代號 ...",
+    "STR_SYMBOL_INFO": " >>> 代號: %s, 名稱: %s, 上市日期: %s, 最後更新: %s",
 }

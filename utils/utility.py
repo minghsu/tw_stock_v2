@@ -4,7 +4,7 @@
 from constant.stock import SymbolField
 
 
-def IsSymbolExist(argStockList, argSymbol):
+def util_is_symbol_exist(argStockList, argSymbol):
     # (('911613', '特藝-DR', '2011/02/25'), ('9949', '琉園', '2003/11/21'))
     lo, hi = 0, len(argStockList) - 1
     while lo <= hi:

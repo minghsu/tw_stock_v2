@@ -7,10 +7,10 @@ from constant.stock import StockDB
 
 
 class BaseSQL(abc.ABC):
-    def __init__(self, argDictSqlCmd):
+    def __init__(self, arg_dict_sql_cmd):
         self.connection = None
         self.dbEngine = None
-        self.dictSql = argDictSqlCmd
+        self.dictSql = arg_dict_sql_cmd
 
     @abc.abstractmethod
     def name(self):
@@ -23,12 +23,12 @@ class BaseSQL(abc.ABC):
         return NotImplemented
 
     @abc.abstractclassmethod
-    def initial(self, argDbClass):
+    def initial(self, arg_db_class):
         # Initial the instance
         return NotImplemented
 
     @abc.abstractclassmethod
-    def connect(self, argHost, argId, argPw):
+    def connect(self, arg_host, arg_id, arg_pw):
         # connect to database
         return NotImplemented
 
@@ -52,19 +52,19 @@ class BaseSQL(abc.ABC):
         raise NotImplementedError
 
     # without row data
-    def execute(self, argSqlCmd):
+    def execute(self, arg_sql_cmd):
         lCursor = self.cursor()
         if (lCursor != None):
-            lCursor.execute(argSqlCmd)
+            lCursor.execute(arg_sql_cmd)
             return True
 
         return False
 
     # with row data
-    def query(self, argSqlCmd):
+    def query(self, arg_sql_cmd):
         lCursor = self.cursor()
         if (lCursor != None):
-            lCursor.execute(argSqlCmd)
+            lCursor.execute(arg_sql_cmd)
             if (lCursor.rowcount > 0):
                 return (lCursor.rowcount, lCursor.fetchall())
 

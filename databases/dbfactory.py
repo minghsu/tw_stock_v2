@@ -26,23 +26,23 @@ class DbFactory():
                             [name, instanceClass.name(), dependency])
                         break
 
-    def is_db_module_exist(self, argModule):
+    def is_db_module_exist(self, arg_module):
         bRet = True
-        if (util.find_spec(argModule) == None):
+        if (util.find_spec(arg_module) == None):
             bRet = False
         return bRet
 
     def get_db_module_list(self):
         return self.__dbList
 
-    def connect(self, argDbClass, argModule, argHost, argId, argPw):
+    def connect(self, arg_db_class, arg_module, arg_host, arg_id, arg_pw):
         bRet = False
-        if (util.find_spec(argModule) != None):
+        if (util.find_spec(arg_module) != None):
             dbClassBase = __import__("databases.engine.%s" %
-                                     (argDbClass), fromlist=[argDbClass])
-            self.__dbClass = getattr(dbClassBase, argDbClass)()
-            self.__dbClass.initial(argModule)
-            bRet = self.__dbClass.connect(argHost, argId, argPw)
+                                     (arg_db_class), fromlist=[arg_db_class])
+            self.__dbClass = getattr(dbClassBase, arg_db_class)()
+            self.__dbClass.initial(arg_module)
+            bRet = self.__dbClass.connect(arg_host, arg_id, arg_pw)
 
         return bRet
 
@@ -58,13 +58,13 @@ class DbFactory():
         if (self.__dbClass != None):
             return self.__dbClass.open()
 
-    def execute(self, argSqlCmd):
+    def execute(self, arg_sql_cmd):
         if (self.__dbClass != None):
-            return self.__dbClass.execute(argSqlCmd)
+            return self.__dbClass.execute(arg_sql_cmd)
 
-    def query(self, argSqlCmd):
+    def query(self, arg_sql_cmd):
         if (self.__dbClass != None):
-            return self.__dbClass.query(argSqlCmd)
+            return self.__dbClass.query(arg_sql_cmd)
 
     def commit(self):
         if (self.__dbClass != None):
