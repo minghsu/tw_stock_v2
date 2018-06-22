@@ -22,3 +22,10 @@ class SymbolField(Enum):
     IDX_NAME = 1
     IDX_CREATE_DATE = 2
     IDX_UPDATED_DATE = 3
+
+
+@unique
+class ClassSupportField(Enum):
+    IDX_CLASS_NAME = 0
+    IDX_RMDB_NAME = 1
+    IDX_MODULE_NAME = 2

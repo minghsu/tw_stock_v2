@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 from constant.state import State
-from constant.stock import SymbolField
+from constant.stock import SymbolField, ClassSupportField
 from res.stringfactory import StringFactory
 from consoles import consoles
 from utils.switch import Switch
@@ -148,15 +148,17 @@ class controller:
                         self.__strFactory.get_string('STR_DB_SUPPORT_LIST'))
                     for i in range(len(lst_db_supported_modules)):
                         viewer.string("%d. %s" %
-                                      (i+1, lst_db_supported_modules[i][1]))
+                                      (i+1, lst_db_supported_modules[i][ClassSupportField.IDX_RMDB_NAME.value]))
 
                     nChoose = self.__consoles.getValue(
                         self.__strFactory.get_string('STR_DB_SELECT'), 1, len(lst_db_supported_modules))
                     # Ex: MySQL (0), MariabDB/MySQL, MySQLdb (2)
                     # 0 > dynamic import the class on DbFactory.py
                     # 2 > dynamice import the db module (Ex: pymysql, MySQLdb or psycopg2 )
-                    self.__config.dbClass = lst_db_supported_modules[nChoose-1][0]
-                    self.__config.module = lst_db_supported_modules[nChoose-1][2]
+                    self.__config.dbClass = lst_db_supported_modules[nChoose -
+                                                                     1][ClassSupportField.IDX_CLASS_NAME.value]
+                    self.__config.module = lst_db_supported_modules[nChoose -
+                                                                    1][ClassSupportField.IDX_MODULE_NAME.value]
                     self.__config.host = self.__consoles.get_string(
                         self.__strFactory.get_string('STR_DB_HOST'), self.__config.host)
                     self.__config.id = self.__consoles.get_string(
