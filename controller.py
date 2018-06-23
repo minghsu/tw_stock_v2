@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 from constant.state import State
+from constant.error import Error
 from constant.stock import SymbolField, ClassSupportField
 from res.stringfactory import StringFactory
 from consoles import consoles
@@ -31,6 +32,21 @@ class controller:
         self.__state = State.Startup
         self.__strCmd = None
         self.__parameter = None
+
+    def __updating_message(self, arg_status):
+        retStatus = ""
+        for status in arg_status:
+            if (status[1] == Error.ERR_TIMEOUT):
+                tmp = "%s: %s" % (
+                    status[0], self.__strFactory.get_string('STR_REQUEST_TIMEOUT'))
+            else:
+                tmp = "%s: %3d%%" % (status[0], status[1])
+
+            if (retStatus != ""):
+                retStatus = retStatus + "\n"
+            retStatus = retStatus + tmp
+
+        return retStatus
 
     def do_job(self):
         for case in Switch(self.__state):
@@ -92,7 +108,8 @@ class controller:
                 viewer.empty_string()
                 self.__stocksymbol = StockSymbol(self.__strFactory)
                 time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
-                viewer.string(self.__stocksymbol.get_status())
+                viewer.string(self.__updating_message(
+                    self.__stocksymbol.get_status()))
                 self.__fetchCount = self.__stocksymbol.get_fetch_count()
                 self.__state = State.Downloading
                 self.__stocksymbol.run()
@@ -100,7 +117,8 @@ class controller:
             if case(State.Downloading):
                 self.__stocksymbol.retrive_data()
                 viewer.move_cursor_up(self.__fetchCount)
-                viewer.string(self.__stocksymbol.get_status())
+                viewer.string(self.__updating_message(
+                    self.__stocksymbol.get_status()))
                 if (self.__stocksymbol.is_alive() == False):
                     viewer.empty_string()
                     self.__state = State.Updating
@@ -115,21 +133,22 @@ class controller:
 
                 strUpdatedDate = datetime.today().strftime("%Y/%m/%d")
                 nSymbolCount = len(self.__symbolResult)
-                for idx in range(nSymbolCount):
-                    self.__model.update_stock_symbol(
-                        self.__symbolResult[idx], strUpdatedDate)
+                if (nSymbolCount > 0):
+                    for idx in range(nSymbolCount):
+                        self.__model.update_stock_symbol(
+                            self.__symbolResult[idx], strUpdatedDate)
 
-                    if (idx % DEF_SYMBOL_UI_UPDATE_COUNT == 0):
-                        if (idx != 0):
-                            viewer.move_cursor_up(1)
-                        viewer.string(self.__strFactory.get_string(
-                            'STR_SYMBOL_UPDATING') % (idx/nSymbolCount * 100))
-                        time.sleep(DEF_VIEWER_DELAY_TIMER)
+                        if (idx % DEF_SYMBOL_UI_UPDATE_COUNT == 0):
+                            if (idx != 0):
+                                viewer.move_cursor_up(1)
+                            viewer.string(self.__strFactory.get_string(
+                                'STR_SYMBOL_UPDATING') % (idx/nSymbolCount * 100))
+                            time.sleep(DEF_VIEWER_DELAY_TIMER)
 
-                # Just for UI friendly ( show 100% finished )
-                viewer.move_cursor_up(1)
-                viewer.string(self.__strFactory.get_string(
-                    'STR_SYMBOL_UPDATING') % (100))
+                    # Just for UI friendly ( show 100% finished )
+                    viewer.move_cursor_up(1)
+                    viewer.string(self.__strFactory.get_string(
+                        'STR_SYMBOL_UPDATING') % (100))
 
                 # update final symbol list and update lost count of stock symbol
                 self.__model.fetch_symbol_list()

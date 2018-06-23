@@ -8,7 +8,9 @@ import platform
 TwStockController = controller()
 
 if __name__ == "__main__":
-    if (platform.system() == "Windows"):
+
+    platform_name = platform.system()
+    if (platform_name == "Windows"):
         freeze_support()
 
     while (TwStockController.do_job()):

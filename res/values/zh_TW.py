@@ -42,4 +42,5 @@ DICT_STR_RESOURCE = {
                          "      remove [analyze type] > 移除要執行的技術分析"),
     "STR_SYMBOL_NOT_FOUND": "查無 %s 股票代號 ...",
     "STR_SYMBOL_INFO": " >>> 代號: %s, 名稱: %s, 上市日期: %s, 最後更新: %s",
+    "STR_REQUEST_TIMEOUT": "連線要求逾時.",
 }

@@ -43,4 +43,5 @@ DICT_STR_RESOURCE = {
                          "      remove[type] > Remove exist technical analysis.\n"),
     "STR_SYMBOL_NOT_FOUND": "Can't found the %s stock symbol ...",
     "STR_SYMBOL_INFO": " >>> Symbol: %s, Name: %s, Listed Date: %s, Last Update: %s",
+    "STR_REQUEST_TIMEOUT": "Request timeout.",
 }

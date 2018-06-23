@@ -4,6 +4,7 @@
 from multiprocessing import Process, Queue
 from lxml import etree
 from constant.stock import RetriveType
+from constant.error import Error
 
 import time
 import random
@@ -41,35 +42,39 @@ class FetchSymbol(Process):
                 'User-Agent': random.choice(USER_AGENT_LIST)
             }
         )
-        url_response = urllib.request.urlopen(
-            fetchReq, timeout=DEF_FETCH_TIMEOUT)
-        url_content = url_response.read()
-        url_content = url_content.decode('big5-hkscs').encode('utf-8')
+        try:
+            url_response = urllib.request.urlopen(
+                fetchReq, timeout=DEF_FETCH_TIMEOUT)
+        except:
+            self.__queue.put(
+                [RetriveType.ERROR, [self.__type, Error.ERR_TIMEOUT]])
+        else:
+            url_content = url_response.read()
+            url_content = url_content.decode('big5-hkscs').encode('utf-8')
 
-        html_content = etree.HTML(
-            url_content, parser=etree.HTMLParser(encoding='utf-8'))
-        tr_contents = html_content.xpath("//table[2]/tr")
+            html_content = etree.HTML(
+                url_content, parser=etree.HTMLParser(encoding='utf-8'))
+            tr_contents = html_content.xpath("//table[2]/tr")
 
-        total_tr_count = len(tr_contents)
-        for idx, tr in enumerate(tr_contents, start=1):
-            td_contents = tr.xpath(".//td")
-            if len(td_contents) == 7:
-                td_name = td_contents[0].text
-                td_date = td_contents[2].text
+            total_tr_count = len(tr_contents)
+            for idx, tr in enumerate(tr_contents, start=1):
+                td_contents = tr.xpath(".//td")
+                if len(td_contents) == 7:
+                    td_name = td_contents[0].text
+                    td_date = td_contents[2].text
 
-                splitIdx = td_name.find(u'　')
-                if (splitIdx >= 0):
-                    stock_code = td_name[:splitIdx]
-                    stock_code = stock_code.replace(" ", "")
-                    stock_name = td_name[splitIdx+1:]
+                    splitIdx = td_name.find(u'　')
+                    if (splitIdx >= 0):
+                        stock_code = td_name[:splitIdx]
+                        stock_code = stock_code.replace(" ", "")
+                        stock_name = td_name[splitIdx+1:]
+                        self.__queue.put(
+                            [RetriveType.DATA, [self.__type, [stock_code, stock_name, td_date]]])
 
                     self.__queue.put(
-                        [RetriveType.DATA, [self.__type, [stock_code, stock_name, td_date]]])
+                        [RetriveType.INFO, [self.__type, (idx/total_tr_count)*100]])
 
-                self.__queue.put(
-                    [RetriveType.INFO, [self.__type, (idx/total_tr_count)*100]])
+                if (idx % 100 == 0):
+                    time.sleep(DEF_SLEEP_TIME)
 
-            if (idx % 100 == 0):
-                time.sleep(DEF_SLEEP_TIME)
-
-        self.__queue.put([RetriveType.INFO, [self.__type, 100]])
+            self.__queue.put([RetriveType.INFO, [self.__type, 100]])

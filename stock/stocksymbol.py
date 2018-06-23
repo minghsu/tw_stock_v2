@@ -4,6 +4,7 @@
 from multiprocessing import Queue
 from . fetchsymbol import FetchSymbol
 from constant.stock import RetriveType
+from constant.error import Error
 
 # URL for List & OTC company
 DICT_CRAWL_CODE_URL = {
@@ -37,22 +38,14 @@ class StockSymbol:
             dataItem = self.__queue.get()
             if (dataItem[0] == RetriveType.DATA):
                 self.__result.append(dataItem[1][1])
-            elif (dataItem[0] == RetriveType.INFO):
-                # print(dataItem)
+            elif (dataItem[0] == RetriveType.INFO or
+                  dataItem[0] == RetriveType.ERROR):
                 for i in range(len(self.__status)):
                     if (self.__status[i][0] == dataItem[1][0]):
                         self.__status[i][1] = dataItem[1][1]
 
     def get_status(self):
-        retStatus = ""
-        for status in self.__status:
-            tmp = "%3d%%  %s" % (status[1], status[0])
-            if (retStatus != ""):
-                retStatus = retStatus + "\n"
-
-            retStatus = retStatus + tmp
-
-        return retStatus
+        return self.__status
 
     def get_result(self):
         return self.__result
