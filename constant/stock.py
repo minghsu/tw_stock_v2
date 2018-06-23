@@ -8,6 +8,7 @@ from enum import Enum, unique
 class StockDB(Enum):
     STR_DATABASE_NAME = "tw_stock"
     STR_STOCK_SYMBOL_TABLE_NAME = "stock_symbol"
+    STR_STOCK_SYMBOL_DATA_TABLE_PREFIX = "symbol_"
 
 
 @unique

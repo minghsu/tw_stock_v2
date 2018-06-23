@@ -220,12 +220,21 @@ class controller:
                 symbol_info = self.__model.get_symbol_info(self.__parameter)
                 if (symbol_info != None):
                     self.__consoles.set_used_symbol(self.__parameter)
+                    self.__model.create_symbol_data_table(self.__parameter)
+                    self.__model.fetch_symbol_trade_date_list(self.__parameter)
+
+                    last_trade_date = self.__model.get_symbol_last_trade_date()
+                    if (last_trade_date == None):
+                        last_trade_date = self.__strFactory.get_string(
+                            'STR_NOT_AVAILABLE')
                     viewer.string(
                         self.__strFactory.get_string('STR_SYMBOL_INFO') % (
                             symbol_info[SymbolField.IDX_SYMBOL.value],
                             symbol_info[SymbolField.IDX_NAME.value],
                             symbol_info[SymbolField.IDX_CREATE_DATE.value],
-                            symbol_info[SymbolField.IDX_UPDATED_DATE.value]))
+                            symbol_info[SymbolField.IDX_UPDATED_DATE.value],
+                            self.__model.get_symbol_trade_count(),
+                            last_trade_date))
                 else:
                     viewer.string(
                         self.__strFactory.get_string('STR_SYMBOL_NOT_FOUND') % (self.__parameter))

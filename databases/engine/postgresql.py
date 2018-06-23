@@ -11,11 +11,22 @@ DICT_POSTGRESQL_CMD = {
     "CMD_CREATE_DATABASE": ("CREATE DATABASE " + StockDB.STR_DATABASE_NAME.value),
     "CMD_CHECK_TABLE": ("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='%s'"),
     "CMD_CREATE_SYMBOL_TABLE": ("CREATE TABLE " + StockDB.STR_STOCK_SYMBOL_TABLE_NAME.value +
-                                "(id SERIAL PRIMARY KEY,"
-                                "symbol VARCHAR(10) UNIQUE,"
-                                "name VARCHAR(32),"
+                                "(id SERIAL  PRIMARY KEY,"
+                                "symbol      VARCHAR(10) UNIQUE,"
+                                "name        VARCHAR(32),"
                                 "create_date VARCHAR(10),"
                                 "update_date VARCHAR(10))"),
+    "CMD_CREATE_DATA_TABLE": ("CREATE TABLE " + StockDB.STR_STOCK_SYMBOL_DATA_TABLE_PREFIX.value + "%s"
+                              "(id SERIAL   PRIMARY KEY,"
+                              "trade_date   VARCHAR(10) UNIQUE,"
+                              "trade_stock  VARCHAR(16),"
+                              "trade_money  VARCHAR(16),"
+                              "trade_open   VARCHAR(8),"
+                              "trade_max    VARCHAR(8),"
+                              "trade_min    VARCHAR(8),"
+                              "trade_end    VARCHAR(8),"
+                              "trade_spread VARCHAR(8),"
+                              "trade_count  VARCHAR(10))"),
 }
 
 

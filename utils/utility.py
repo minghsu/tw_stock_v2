@@ -4,16 +4,17 @@
 from constant.stock import SymbolField
 
 
-def util_is_symbol_exist(argStockList, argSymbol):
-    # (('911613', '特藝-DR', '2011/02/25'), ('9949', '琉園', '2003/11/21'))
-    lo, hi = 0, len(argStockList) - 1
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        if argStockList[mid][0] < argSymbol:
-            lo = mid + 1
-        elif argSymbol < argStockList[mid][0]:
-            hi = mid - 1
-        elif argSymbol == argStockList[mid][0]:
-            return mid
+def util_binary_search_idx(arg_stock_list, arg_list_idx, arg_com_data):
+
+    if (isinstance(arg_stock_list, (tuple, list))):
+        lo, hi = 0, len(arg_stock_list) - 1
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            if arg_stock_list[mid][0] < arg_com_data:
+                lo = mid + 1
+            elif arg_com_data < arg_stock_list[mid][0]:
+                hi = mid - 1
+            elif arg_com_data == arg_stock_list[mid][0]:
+                return mid
 
     return None

@@ -89,15 +89,26 @@ class BaseSQL(abc.ABC):
 
         return False
 
-    def create_symbol_table(self):
-        if (not self.is_table_exist(StockDB.STR_STOCK_SYMBOL_TABLE_NAME.value)):
-            if (self.execute(self.dictSql['CMD_CREATE_SYMBOL_TABLE'])):
-                self.commit()
-                return True
-            else:
-                return False
+    def create_symbol_data_table(self, arg_symbol):
+        if (self.is_table_exist(StockDB.STR_STOCK_SYMBOL_DATA_TABLE_PREFIX.value + arg_symbol)):
+            print("[DEBUG] table exist")
+            return True
 
-        return True
+        if (self.execute(self.dictSql['CMD_CREATE_DATA_TABLE'] % (arg_symbol))):
+            self.commit()
+            return True
+
+        return False
+
+    def create_symbol_table(self):
+        if (self.is_table_exist(StockDB.STR_STOCK_SYMBOL_TABLE_NAME.value)):
+            return True
+
+        if (self.execute(self.dictSql['CMD_CREATE_SYMBOL_TABLE'])):
+            self.commit()
+            return True
+
+        return False
 
     def create_database(self):
         if (not self.is_database_exist()):

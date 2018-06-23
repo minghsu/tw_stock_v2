@@ -12,11 +12,22 @@ DICT_MYSQL_CMD = {
                         " WHERE TABLE_SCHEMA = '" + StockDB.STR_DATABASE_NAME.value + "'"
                         " AND TABLE_NAME = '%s' LIMIT 1"),
     "CMD_CREATE_SYMBOL_TABLE": ("CREATE TABLE " + StockDB.STR_STOCK_SYMBOL_TABLE_NAME.value +
-                                "(id INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
-                                "symbol VARCHAR(10) UNIQUE,"
-                                "name VARCHAR(32),"
+                                "(id         INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
+                                "symbol      VARCHAR(10) UNIQUE,"
+                                "name        VARCHAR(32),"
                                 "create_date VARCHAR(10),"
                                 "update_date VARCHAR(10)) DEFAULT CHARSET=utf8"),
+    "CMD_CREATE_DATA_TABLE": ("CREATE TABLE " + StockDB.STR_STOCK_SYMBOL_DATA_TABLE_PREFIX.value + "%s"
+                              "(id          INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
+                              "trade_date   VARCHAR(10) UNIQUE,"
+                              "trade_stock  VARCHAR(16),"
+                              "trade_money  VARCHAR(16),"
+                              "trade_open   VARCHAR(8),"
+                              "trade_max    VARCHAR(8),"
+                              "trade_min    VARCHAR(8),"
+                              "trade_end    VARCHAR(8),"
+                              "trade_spread VARCHAR(8),"
+                              "trade_count  VARCHAR(10)) DEFAULT CHARSET=utf8"),
 }
 
 

@@ -69,3 +69,7 @@ class DbFactory():
     def commit(self):
         if (self.__dbClass != None):
             return self.__dbClass.commit()
+
+    def create_symbol_data_table(self, arg_symbol):
+        if (self.__dbClass != None):
+            return self.__dbClass.create_symbol_data_table(arg_symbol)
