@@ -3,8 +3,7 @@
 
 from multiprocessing import Queue
 from . fetchsymbol import FetchSymbol
-from constant.stock import RetriveType
-from constant.error import Error
+from constant.stock import RetriveType, Info
 
 # URL for List & OTC company
 DICT_CRAWL_CODE_URL = {
@@ -22,9 +21,8 @@ class StockSymbol:
         for key, value in DICT_CRAWL_CODE_URL.items():
             self.__mp.append(
                 FetchSymbol(self.__queue, argStringFactory.get_string(key), value))
-            # [Type, Percent]
-            # Ex: [STR_OTC_COMPANY, 0]
-            self.__status.append([argStringFactory.get_string(key), 0])
+            self.__status.append(
+                [argStringFactory.get_string(key), 0])
 
     def get_fetch_count(self):
         return len(DICT_CRAWL_CODE_URL)
@@ -38,8 +36,8 @@ class StockSymbol:
             dataItem = self.__queue.get()
             if (dataItem[0] == RetriveType.DATA):
                 self.__result.append(dataItem[1][1])
-            elif (dataItem[0] == RetriveType.INFO or
-                  dataItem[0] == RetriveType.ERROR):
+            elif (dataItem[0] == RetriveType.PERCENT or
+                  dataItem[0] == RetriveType.INFO):
                 for i in range(len(self.__status)):
                     if (self.__status[i][0] == dataItem[1][0]):
                         self.__status[i][1] = dataItem[1][1]

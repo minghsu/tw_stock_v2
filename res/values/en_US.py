@@ -44,5 +44,6 @@ DICT_STR_RESOURCE = {
     "STR_SYMBOL_NOT_FOUND": "Can't found the %s stock symbol ...",
     "STR_SYMBOL_INFO": " >>> Symbol: %s, Name: %s, Listed Date: %s, Last Update: %s, Total Trade Count: %d, Last Trade Date: %s",
     "STR_REQUEST_TIMEOUT": "Request timeout.",
+    "STR_DOWNLOADING": "Downloading ...",
     "STR_NOT_AVAILABLE": "Not Available",
 }

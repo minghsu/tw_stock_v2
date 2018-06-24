@@ -15,7 +15,7 @@ class StockDB(Enum):
 class RetriveType(Enum):
     DATA = 0
     INFO = 1
-    ERROR = 2
+    PERCENT = 3
 
 
 @unique
@@ -31,3 +31,9 @@ class ClassSupportField(Enum):
     IDX_CLASS_NAME = 0
     IDX_RMDB_NAME = 1
     IDX_MODULE_NAME = 2
+
+
+@unique
+class Info(Enum):
+    INFO_DOWNLOAD = "STR_DOWNLOADING"
+    INFO_TIMEOUT = "STR_REQUEST_TIMEOUT"

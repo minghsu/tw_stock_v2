@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 from constant.state import State
-from constant.error import Error
-from constant.stock import SymbolField, ClassSupportField
+from constant.stock import SymbolField, ClassSupportField, Info
 from res.stringfactory import StringFactory
 from consoles import consoles
 from utils.switch import Switch
@@ -33,12 +32,15 @@ class controller:
         self.__strCmd = None
         self.__parameter = None
 
-    def __updating_message(self, arg_status):
+    def __updating_symbol_message(self, arg_status):
         retStatus = ""
         for status in arg_status:
-            if (status[1] == Error.ERR_TIMEOUT):
+            if (status[1] == Info.INFO_TIMEOUT):
                 tmp = "%s: %s" % (
-                    status[0], self.__strFactory.get_string('STR_REQUEST_TIMEOUT'))
+                    status[0], self.__strFactory.get_string(Info.INFO_TIMEOUT.value))
+            elif (status[1] == Info.INFO_DOWNLOAD):
+                tmp = "%s: %s" % (
+                    status[0], self.__strFactory.get_string(Info.INFO_DOWNLOAD.value))
             else:
                 tmp = "%s: %3d%%" % (status[0], status[1])
 
@@ -107,17 +109,17 @@ class controller:
                     self.__strFactory.get_string('STR_SYMBOL_DOWNLOADING'))
                 viewer.empty_string()
                 self.__stocksymbol = StockSymbol(self.__strFactory)
-                time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
-                viewer.string(self.__updating_message(
-                    self.__stocksymbol.get_status()))
-                self.__fetchCount = self.__stocksymbol.get_fetch_count()
+                self.__fetch_symbol_count = self.__stocksymbol.get_fetch_count()
+                for i in range(self.__fetch_symbol_count):
+                    viewer.empty_string()
                 self.__state = State.Downloading
                 self.__stocksymbol.run()
+                time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
             if case(State.Downloading):
                 self.__stocksymbol.retrive_data()
-                viewer.move_cursor_up(self.__fetchCount)
-                viewer.string(self.__updating_message(
+                viewer.move_cursor_up(self.__fetch_symbol_count)
+                viewer.string(self.__updating_symbol_message(
                     self.__stocksymbol.get_status()))
                 if (self.__stocksymbol.is_alive() == False):
                     viewer.empty_string()

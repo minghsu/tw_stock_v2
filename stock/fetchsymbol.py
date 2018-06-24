@@ -3,8 +3,7 @@
 
 from multiprocessing import Process, Queue
 from lxml import etree
-from constant.stock import RetriveType
-from constant.error import Error
+from constant.stock import RetriveType, Info
 
 import time
 import random
@@ -30,7 +29,7 @@ class FetchSymbol(Process):
         self.__queue = argQueue
         self.__type = argType
         self.__url = argUrl
-        self.__queue.put([RetriveType.INFO, [self.__type, 0]])
+        self.__queue.put([RetriveType.PERCENT, [self.__type, 0]])
 
     def run(self):
         time.sleep(DEF_SLEEP_TIME)
@@ -47,7 +46,7 @@ class FetchSymbol(Process):
                 fetchReq, timeout=DEF_FETCH_TIMEOUT)
         except:
             self.__queue.put(
-                [RetriveType.ERROR, [self.__type, Error.ERR_TIMEOUT]])
+                [RetriveType.INFO, [self.__type, Info.INFO_TIMEOUT]])
         else:
             url_content = url_response.read()
             url_content = url_content.decode('big5-hkscs').encode('utf-8')
@@ -72,9 +71,9 @@ class FetchSymbol(Process):
                             [RetriveType.DATA, [self.__type, [stock_code, stock_name, td_date]]])
 
                     self.__queue.put(
-                        [RetriveType.INFO, [self.__type, (idx/total_tr_count)*100]])
+                        [RetriveType.PERCENT, [self.__type, (idx/total_tr_count)*100]])
 
                 if (idx % 100 == 0):
                     time.sleep(DEF_SLEEP_TIME)
 
-            self.__queue.put([RetriveType.INFO, [self.__type, 100]])
+            self.__queue.put([RetriveType.PERCENT, [self.__type, 100]])
