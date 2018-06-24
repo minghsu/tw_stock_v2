@@ -17,7 +17,7 @@ DICT_MYSQL_CMD = {
                                 "name        VARCHAR(32),"
                                 "create_date VARCHAR(10),"
                                 "update_date VARCHAR(10)) DEFAULT CHARSET=utf8"),
-    "CMD_CREATE_DATA_TABLE": ("CREATE TABLE " + StockDB.STR_STOCK_SYMBOL_DATA_TABLE_PREFIX.value + "%s"
+    "CMD_CREATE_DATA_TABLE": ("CREATE TABLE " + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s"
                               "(id          INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
                               "trade_date   VARCHAR(10) UNIQUE,"
                               "trade_stock  VARCHAR(16),"

@@ -222,10 +222,10 @@ class controller:
                 symbol_info = self.__model.get_symbol_info(self.__parameter)
                 if (symbol_info != None):
                     self.__consoles.set_used_symbol(self.__parameter)
-                    self.__model.create_symbol_data_table(self.__parameter)
+                    self.__model.create_stock_data_table(self.__parameter)
                     self.__model.fetch_symbol_trade_date_list(self.__parameter)
 
-                    last_trade_date = self.__model.get_symbol_last_trade_date()
+                    last_trade_date = self.__model.get_stock_last_trade_date()
                     if (last_trade_date == None):
                         last_trade_date = self.__strFactory.get_string(
                             'STR_NOT_AVAILABLE')
