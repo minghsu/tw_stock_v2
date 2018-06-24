@@ -27,5 +27,8 @@ def cmdParser(argCommand):
                 retParameter = splitCmd[1]
                 retState = State.CmdUse
             break
+        if case("fetch"):
+            retState = State.CmdFetch
+            break
 
     return (retState, retParameter)

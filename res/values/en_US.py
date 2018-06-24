@@ -37,7 +37,7 @@ DICT_STR_RESOURCE = {
                          "      exit > Exit\n"
                          "      config > Re-configuration the database connection info."
                          "      use [symbol] > Set to use withc stock symbol\n"
-                         "      fetch [symbol] > Fetch the historical closing information\n"
+                         "      fetch > Fetch the historical closing information\n"
                          "      analyze > Display all supported technical analysis and current setting\n"
                          "      add [type] > Set which technical analysis will be execute.\n"
                          "      remove[type] > Remove exist technical analysis.\n"),
@@ -46,4 +46,5 @@ DICT_STR_RESOURCE = {
     "STR_REQUEST_TIMEOUT": "Request timeout.",
     "STR_DOWNLOADING": "Downloading ...",
     "STR_NOT_AVAILABLE": "Not Available",
+    "STR_STOCK_DATA_FROM_1993": "The historical stock data from 1993, system may auto adjust the start date."
 }

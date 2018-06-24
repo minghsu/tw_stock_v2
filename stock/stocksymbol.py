@@ -13,16 +13,16 @@ DICT_CRAWL_CODE_URL = {
 
 
 class StockSymbol:
-    def __init__(self, argStringFactory):
+    def __init__(self, arg_string_factory):
         self.__mp = []
         self.__status = []
         self.__result = []
         self.__queue = Queue()
         for key, value in DICT_CRAWL_CODE_URL.items():
             self.__mp.append(
-                FetchSymbol(self.__queue, argStringFactory.get_string(key), value))
+                FetchSymbol(self.__queue, arg_string_factory.get_string(key), value))
             self.__status.append(
-                [argStringFactory.get_string(key), 0])
+                [arg_string_factory.get_string(key), 0])
 
     def get_fetch_count(self):
         return len(DICT_CRAWL_CODE_URL)

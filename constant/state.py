@@ -40,3 +40,5 @@ class State(Enum):
     CmdError = 15
     # use command
     CmdUse = 16
+    # fetch command
+    CmdFetch = 17

@@ -8,6 +8,7 @@ from utils.switch import Switch
 from modeler import modeler
 from databases.dbconfigure import DbConfigure
 from stock.stocksymbol import StockSymbol
+from stock.stockdata import StockData
 from datetime import datetime
 
 import time
@@ -31,6 +32,7 @@ class controller:
         self.__state = State.Startup
         self.__strCmd = None
         self.__parameter = None
+        self.__symbol_info = None
 
     def __updating_symbol_message(self, arg_status):
         retStatus = ""
@@ -110,9 +112,9 @@ class controller:
                 viewer.empty_string()
                 self.__stocksymbol = StockSymbol(self.__strFactory)
                 self.__fetch_symbol_count = self.__stocksymbol.get_fetch_count()
-                for i in range(self.__fetch_symbol_count):
-                    viewer.empty_string()
                 self.__state = State.Downloading
+                viewer.string(self.__updating_symbol_message(
+                    self.__stocksymbol.get_status()))
                 self.__stocksymbol.run()
                 time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
@@ -218,9 +220,35 @@ class controller:
                     self.__strFactory.get_string('STR_UNKNOWN_COMMAND'))
                 self.__state = State.Input
                 break
+            if case(State.CmdFetch):
+                if (self.__symbol_info):
+                    viewer.bold_string(self.__strFactory.get_string(
+                        'STR_STOCK_DATA_FROM_1993'))
+
+                    stock_list = []
+
+                    stock_symbol = self.__symbol_info[SymbolField.IDX_SYMBOL.value]
+                    stock_stop_date = datetime.today().strftime("%Y%m")
+
+                    stock_start_date = self.__model.get_stock_last_trade_date()
+                    if (stock_start_date == None):
+                        stock_start_date = self.__symbol_info[SymbolField.IDX_CREATE_DATE.value]
+
+                    stock_start_date = datetime.strptime(
+                        stock_start_date, '%Y/%m/%d').strftime("%Y%m")
+
+                    stock_list.append(
+                        [stock_symbol, stock_start_date, stock_stop_date])
+                    self.__stockdata = StockData(stock_list)
+
+                    self.__state = State.Input
+                else:
+                    self.__state = State.CmdError
+                break
             if case(State.CmdUse):
-                symbol_info = self.__model.get_symbol_info(self.__parameter)
-                if (symbol_info != None):
+                self.__symbol_info = self.__model.get_symbol_info(
+                    self.__parameter)
+                if (self.__symbol_info != None):
                     self.__consoles.set_used_symbol(self.__parameter)
                     self.__model.create_stock_data_table(self.__parameter)
                     self.__model.fetch_symbol_trade_date_list(self.__parameter)
@@ -229,12 +257,12 @@ class controller:
                     if (last_trade_date == None):
                         last_trade_date = self.__strFactory.get_string(
                             'STR_NOT_AVAILABLE')
-                    viewer.string(
+                    viewer.bold_string(
                         self.__strFactory.get_string('STR_SYMBOL_INFO') % (
-                            symbol_info[SymbolField.IDX_SYMBOL.value],
-                            symbol_info[SymbolField.IDX_NAME.value],
-                            symbol_info[SymbolField.IDX_CREATE_DATE.value],
-                            symbol_info[SymbolField.IDX_UPDATED_DATE.value],
+                            self.__symbol_info[SymbolField.IDX_SYMBOL.value],
+                            self.__symbol_info[SymbolField.IDX_NAME.value],
+                            self.__symbol_info[SymbolField.IDX_CREATE_DATE.value],
+                            self.__symbol_info[SymbolField.IDX_UPDATED_DATE.value],
                             self.__model.get_symbol_trade_count(),
                             last_trade_date))
                 else:

@@ -36,7 +36,7 @@ DICT_STR_RESOURCE = {
                          "      exit > 離開系統\n"
                          "      config > 重新設定資料庫連線資訊\n"
                          "      use [symbol] > 指定股票代號\n"
-                         "      fetch [symbol] > 下載股票收盤資料\n"
+                         "      fetch > 下載股票收盤資料\n"
                          "      analyze > 顯示已支援的技術分析, 以及目前已設定的狀態\n"
                          "      add [analyze type] > 設定要執行的技術分析\n"
                          "      remove [analyze type] > 移除要執行的技術分析"),
@@ -45,4 +45,5 @@ DICT_STR_RESOURCE = {
     "STR_REQUEST_TIMEOUT": "連線要求逾時.",
     "STR_DOWNLOADING": "下載中 ...",
     "STR_NOT_AVAILABLE": "不存在",
+    "STR_STOCK_DATA_FROM_1993": "收盤資料從1993年開始收錄, 系統將依情況自動調整擷取日期."
 }

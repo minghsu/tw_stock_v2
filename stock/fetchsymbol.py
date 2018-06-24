@@ -4,6 +4,7 @@
 from multiprocessing import Process, Queue
 from lxml import etree
 from constant.stock import RetriveType, Info
+from constant.useragent import USER_AGENT_LIST
 
 import time
 import random
@@ -13,22 +14,12 @@ DEF_FETCH_TIMEOUT = 10
 DEF_SLEEP_TIME = 0.1
 
 
-# User Agent
-USER_AGENT_LIST = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
-    "Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36",
-    "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36"
-]
-
-
 class FetchSymbol(Process):
-    def __init__(self, argQueue, argType, argUrl):
+    def __init__(self, arg_queue, arg_type, arg_url):
         super(FetchSymbol, self).__init__()
-        self.__queue = argQueue
-        self.__type = argType
-        self.__url = argUrl
+        self.__queue = arg_queue
+        self.__type = arg_type
+        self.__url = arg_url
         self.__queue.put([RetriveType.PERCENT, [self.__type, 0]])
 
     def run(self):

@@ -91,7 +91,6 @@ class BaseSQL(abc.ABC):
 
     def create_stock_data_table(self, arg_symbol):
         if (self.is_table_exist(StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + arg_symbol)):
-            print("[DEBUG] table exist")
             return True
 
         if (self.execute(self.dictSql['CMD_CREATE_DATA_TABLE'] % (arg_symbol))):

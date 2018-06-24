@@ -34,6 +34,13 @@ class ClassSupportField(Enum):
 
 
 @unique
+class FetchStockDataField(Enum):
+    IDX_SYMBOL = 0
+    IDX_START_DATE = 1
+    IDX_STOP_DATE = 2
+
+
+@unique
 class Info(Enum):
     INFO_DOWNLOAD = "STR_DOWNLOADING"
     INFO_TIMEOUT = "STR_REQUEST_TIMEOUT"
