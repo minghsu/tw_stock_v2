@@ -12,7 +12,7 @@ DICT_STR_RESOURCE = {
     "STR_DB_CONNECT_ERROR": "無法連接資料庫，請確認設定值是否正確?",
     "STR_CONFIG_DATABASE": ("資料庫連線資訊設定作業，請依指示提供伺服器位址，帳號與密碼。\n"
                             "請確保該帳密有建立資料庫和資料表的權限，系統將自行產生相關資料。\n"
-                            "PS. 本設定將直接儲存為純文字檔案，請妥善保存。\n"),
+                            "PS. 本設定將直接儲存為 XML 檔案。\n"),
     "STR_DB_SUPPORT_LIST": "系統偵測到下列 Python 資料庫套件:",
     "STR_DB_SELECT": "請選擇欲使用的資料庫系統?",
     "STR_DB_NOT_DETECTED": "系統無法偵測到相關資料庫套件!!",

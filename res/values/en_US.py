@@ -13,7 +13,7 @@ DICT_STR_RESOURCE = {
     "STR_CONFIG_DATABASE": ("The database connection info is configurating.\n"
                             "Please follow the indicate to provide the HOST, ID & PW info.\n"
                             "Please confirm the ID have the CREATE DATABASE/TABLE permissions.\n"
-                            "PS. The LOGIN info were store in TEXT file, please be careful.\n"),
+                            "PS. The LOGIN info were store in XML file.\n"),
     "STR_DB_SUPPORT_LIST": "System detected below DB packages for Python:",
     "STR_DB_SELECT": "Pleass select which DB system will be use?",
     "STR_DB_NOT_DETECTED": "System can't detect the database pacakges!!",

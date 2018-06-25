@@ -40,9 +40,6 @@ class controller:
             if (status[1] == Info.INFO_TIMEOUT):
                 tmp = "%s: %s" % (
                     status[0], self.__strFactory.get_string(Info.INFO_TIMEOUT.value))
-            elif (status[1] == Info.INFO_DOWNLOAD):
-                tmp = "%s: %s" % (
-                    status[0], self.__strFactory.get_string(Info.INFO_DOWNLOAD.value))
             else:
                 tmp = "%s: %3d%%" % (status[0], status[1])
 

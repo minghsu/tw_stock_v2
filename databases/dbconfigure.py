@@ -9,13 +9,15 @@
 import os.path
 import os
 
-CONFIG_FILE_NAME = "CONFIG.FILE"
+from lxml import etree
+
+CONFIG_XML_FILE = "configuration.xml"
 
 
 class DbConfigure:
     def __init__(self):
         self.__exist = True if (os.path.isfile(
-            CONFIG_FILE_NAME) != 0) else False
+            CONFIG_XML_FILE) != 0) else False
         if (self.__exist == False or self.load() == False):
             self.__reset()
 
@@ -28,32 +30,48 @@ class DbConfigure:
 
     def save(self):
         bRet = True
+
         try:
-            fp = open(CONFIG_FILE_NAME, "w")
-            fp.writelines(self.__dbclass + "\n")
-            fp.writelines(self.__module + "\n")
-            fp.writelines(self.__host + "\n")
-            fp.writelines(self.__id + "\n")
-            fp.writelines(self.__pw + "\n")
+            configuration = etree.Element("configuration")
+            rmdbs = etree.SubElement(configuration, 'rmdbs')
+
+            db_class = etree.SubElement(rmdbs, "class")
+            db_class.text = self.__dbclass
+            db_module = etree.SubElement(rmdbs, "module")
+            db_module.text = self.__module
+            db_host = etree.SubElement(rmdbs, "host")
+            db_host.text = self.__host
+            db_id = etree.SubElement(rmdbs, "id")
+            db_id.text = self.__id
+            db_pw = etree.SubElement(rmdbs, "pw")
+            db_pw.text = self.__pw
+
+            tree = etree.ElementTree(configuration)
+            tree.write(CONFIG_XML_FILE, pretty_print=True,
+                       xml_declaration=True, encoding='utf-8')
         except:
             bRet = False
-        else:
-            fp.close()
         return bRet
 
     def load(self):
         bRet = True
+
         try:
-            fp = open(CONFIG_FILE_NAME, "r")
-            self.__dbclass = fp.readline().strip()
-            self.__module = fp.readline().strip()
-            self.__host = fp.readline().strip()
-            self.__id = fp.readline().strip()
-            self.__pw = fp.readline().strip()
+            xml = etree.parse(CONFIG_XML_FILE)
+            configuration = xml.getroot()
+
+            xml_node = configuration.xpath("rmdbs//class")
+            self.__dbclass = xml_node[0].text
+            xml_node = configuration.xpath("rmdbs//module")
+            self.__module = xml_node[0].text
+            xml_node = configuration.xpath("rmdbs//host")
+            self.__host = xml_node[0].text
+            xml_node = configuration.xpath("rmdbs//id")
+            self.__id = xml_node[0].text
+            xml_node = configuration.xpath("rmdbs//pw")
+            self.__pw = xml_node[0].text
         except:
             bRet = False
-        else:
-            fp.close()
         return bRet
 
     def isExist(self):
