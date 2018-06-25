@@ -18,3 +18,8 @@ def util_binary_search_idx(arg_stock_list, arg_list_idx, arg_com_data):
                 return mid
 
     return None
+
+
+def util_convert_roc_to_ad_year(arg_roc_year):
+    tmpYear = arg_roc_year[0:arg_roc_year.find("/")]
+    return str((int(tmpYear)+1911)) + arg_roc_year[arg_roc_year.find("/"):]

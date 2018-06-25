@@ -15,7 +15,6 @@ class StockDB(Enum):
 class RetriveType(Enum):
     DATA = 0
     INFO = 1
-    PERCENT = 3
 
 
 @unique
@@ -38,6 +37,19 @@ class FetchStockDataField(Enum):
     IDX_SYMBOL = 0
     IDX_START_DATE = 1
     IDX_STOP_DATE = 2
+
+
+@unique
+class StockDataField(Enum):
+    IDX_DATE = 0
+    IDX_VOLUMN = 1
+    IDX_MONEY = 2
+    IDX_OPEN = 3
+    IDX_MAX = 4
+    IDX_MIN = 5
+    IDX_CLOSE = 6
+    IDX_SPREAD = 7
+    IDX_COUNT = 8
 
 
 @unique

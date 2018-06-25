@@ -49,6 +49,21 @@ class controller:
 
         return retStatus
 
+    def __updating_stock_data_message(self, arg_status):
+        retStatus = ""
+        for status in arg_status:
+            if (status[1] == Info.INFO_TIMEOUT):
+                tmp = "%s: %s" % (
+                    status[0], self.__strFactory.get_string(Info.INFO_TIMEOUT.value))
+            else:
+                tmp = "%s: %s" % (status[0], status[1])
+
+            if (retStatus != ""):
+                retStatus = retStatus + "\n"
+            retStatus = retStatus + tmp
+
+        return retStatus
+
     def do_job(self):
         for case in Switch(self.__state):
             if case(State.Exit):
@@ -237,10 +252,28 @@ class controller:
                     stock_list.append(
                         [stock_symbol, stock_start_date, stock_stop_date])
                     self.__stockdata = StockData(stock_list)
+                    self.__fetch_stock_count = self.__stockdata.get_fetch_count()
 
-                    self.__state = State.Input
+                    viewer.string(self.__updating_stock_data_message(
+                        self.__stockdata.get_status()))
+                    self.__stockdata.run()
+                    self.__state = State.Fetching
                 else:
                     self.__state = State.CmdError
+                break
+            if case(State.Fetching):
+                self.__stockdata.retrive_data()
+                viewer.move_cursor_up(self.__fetch_stock_count)
+
+                viewer.string(self.__updating_stock_data_message(
+                    self.__stockdata.get_status()))
+
+                if (self.__stockdata.is_alive() == False):
+                    viewer.empty_string()
+                    self.__state = State.Input
+                else:
+                    time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
+
                 break
             if case(State.CmdUse):
                 self.__symbol_info = self.__model.get_symbol_info(

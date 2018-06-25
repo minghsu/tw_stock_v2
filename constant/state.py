@@ -17,7 +17,7 @@ class State(Enum):
     # Waiting the command
     Input = 4
     # Fetching the record of the stock
-    Fetch = 5
+    Fetching = 5
     # Stock analyzing ( Ex: KDJ, MACD, etc )
     Analyze = 6
     # Export the analyzed result

@@ -10,8 +10,8 @@ import time
 import random
 import urllib.request
 
-DEF_FETCH_TIMEOUT = 10
-DEF_SLEEP_TIME = 0.1
+DEF_FETCH_SYMBOL_TIMEOUT = 10
+DEF_FETCH_SYMBOL_SLEEP_TIME = 0.1
 
 
 class FetchSymbol(Process):
@@ -20,11 +20,9 @@ class FetchSymbol(Process):
         self.__queue = arg_queue
         self.__type = arg_type
         self.__url = arg_url
-        self.__queue.put([RetriveType.PERCENT, [self.__type, 0]])
+        self.__queue.put([RetriveType.INFO, [self.__type, 0]])
 
     def run(self):
-        time.sleep(DEF_SLEEP_TIME)
-
         fetchReq = urllib.request.Request(
             self.__url,
             data=None,
@@ -34,7 +32,7 @@ class FetchSymbol(Process):
         )
         try:
             url_response = urllib.request.urlopen(
-                fetchReq, timeout=DEF_FETCH_TIMEOUT)
+                fetchReq, timeout=DEF_FETCH_SYMBOL_TIMEOUT)
         except:
             self.__queue.put(
                 [RetriveType.INFO, [self.__type, Info.INFO_TIMEOUT]])
@@ -62,9 +60,9 @@ class FetchSymbol(Process):
                             [RetriveType.DATA, [self.__type, [stock_code, stock_name, td_date]]])
 
                     self.__queue.put(
-                        [RetriveType.PERCENT, [self.__type, (idx/total_tr_count)*100]])
+                        [RetriveType.INFO, [self.__type, (idx/total_tr_count)*100]])
 
                 if (idx % 100 == 0):
-                    time.sleep(DEF_SLEEP_TIME)
+                    time.sleep(DEF_FETCH_SYMBOL_SLEEP_TIME)
 
-            self.__queue.put([RetriveType.PERCENT, [self.__type, 100]])
+            self.__queue.put([RetriveType.INFO, [self.__type, 100]])

@@ -19,7 +19,7 @@ DICT_POSTGRESQL_CMD = {
     "CMD_CREATE_DATA_TABLE": ("CREATE TABLE " + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s"
                               "(id SERIAL   PRIMARY KEY,"
                               "trade_date   VARCHAR(10) UNIQUE,"
-                              "trade_stock  VARCHAR(16),"
+                              "trade_volumn VARCHAR(16),"
                               "trade_money  VARCHAR(16),"
                               "trade_open   VARCHAR(8),"
                               "trade_max    VARCHAR(8),"
