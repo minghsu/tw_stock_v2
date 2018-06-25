@@ -142,9 +142,8 @@ class controller:
                     time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
             if case(State.Updating):
-                # get result
+                self.__stocksymbol.retrive_data()
                 self.__symbolResult = self.__stocksymbol.get_result()
-                # update current symbol list
                 self.__model.fetch_symbol_list()
 
                 strUpdatedDate = datetime.today().strftime("%Y/%m/%d")
@@ -152,7 +151,7 @@ class controller:
                 if (nSymbolCount > 0):
                     for idx in range(nSymbolCount):
                         self.__model.update_stock_symbol(
-                            self.__symbolResult[idx], strUpdatedDate)
+                            self.__symbolResult[idx][1], strUpdatedDate)
 
                         if (idx % DEF_SYMBOL_UI_UPDATE_COUNT == 0):
                             if (idx != 0):
@@ -245,6 +244,8 @@ class controller:
                     stock_start_date = self.__model.get_stock_last_trade_date()
                     if (stock_start_date == None):
                         stock_start_date = self.__symbol_info[SymbolField.IDX_CREATE_DATE.value]
+                    else:
+                        stock_start_date = stock_start_date[0]
 
                     stock_start_date = datetime.strptime(
                         stock_start_date, '%Y/%m/%d').strftime("%Y%m")
@@ -268,7 +269,13 @@ class controller:
                 viewer.string(self.__updating_stock_data_message(
                     self.__stockdata.get_status()))
 
-                if (self.__stockdata.is_alive() == False):
+                stock_data = self.__stockdata.get_result()
+                while (stock_data != None):
+                    self.__model.update_stock_data(stock_data)
+                    stock_data = self.__stockdata.get_result()
+
+                if (self.__stockdata.is_alive() == False
+                        and self.__stockdata.is_queue_empty()):
                     viewer.empty_string()
                     self.__state = State.Input
                 else:
@@ -287,6 +294,8 @@ class controller:
                     if (last_trade_date == None):
                         last_trade_date = self.__strFactory.get_string(
                             'STR_NOT_AVAILABLE')
+                    else:
+                        last_trade_date = last_trade_date[0]
                     viewer.bold_string(
                         self.__strFactory.get_string('STR_SYMBOL_INFO') % (
                             self.__symbol_info[SymbolField.IDX_SYMBOL.value],

@@ -35,7 +35,7 @@ class StockSymbol:
         while not self.__queue.empty():
             dataItem = self.__queue.get()
             if (dataItem[0] == RetriveType.DATA):
-                self.__result.append(dataItem[1][1])
+                self.__result.append(dataItem[1])
             elif (dataItem[0] == RetriveType.INFO):
                 for i in range(len(self.__status)):
                     if (self.__status[i][0] == dataItem[1][0]):

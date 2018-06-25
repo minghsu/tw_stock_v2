@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from databases.dbfactory import DbFactory
-from constant.stock import SymbolField, StockDB
+from constant.stock import SymbolField, StockDB, StockDataField
 from utils.utility import util_binary_search_idx
 
 DICT_SQL_CMD = {
@@ -15,6 +15,13 @@ DICT_SQL_CMD = {
                                     " SET update_date = '%s' where symbol='%s'"),
     "SQL_CMD_FETCH_SYMBOL_TRADE_DATE_LIST": ("SELECT trade_date FROM "
                                              + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s ORDER BY trade_date"),
+    "SQL_CMD_INSERT_STOCK_DATA": ("INSERT INTO " + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s"
+                                  " (trade_date, trade_volumn, trade_money, trade_open, trade_max, trade_min, trade_end, trade_spread, trade_count)"
+                                  " VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"),
+    "SQL_CMD_UPDATE_STOCK_DATA": ("UPDATE " + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s"
+                                  " SET trade_volumn = '%s',  trade_money = '%s', trade_open = '%s',"
+                                  " trade_max = '%s',  trade_min = '%s', trade_end = '%s',"
+                                  " trade_spread = '%s',  trade_count = '%s' WHERE trade_date='%s'"),
 }
 
 
@@ -72,6 +79,37 @@ class modeler:
             str_sql_cmd = DICT_SQL_CMD['SQL_CMD_UPDATE_STOCK_SYMBOL'] % (
                 arg_update_date,
                 arg_symbol_item[SymbolField.IDX_SYMBOL.value])
+
+        self.__dbFactory.execute(str_sql_cmd)
+        self.__dbFactory.commit()
+
+    def update_stock_data(self, arg_stock_data):
+        str_sql_cmd = ""
+
+        if (util_binary_search_idx(self.__SymbolTradeDateList, 0, arg_stock_data[1][StockDataField.IDX_DATE.value]) == None):
+            str_sql_cmd = DICT_SQL_CMD['SQL_CMD_INSERT_STOCK_DATA'] % (
+                arg_stock_data[0],
+                arg_stock_data[1][StockDataField.IDX_DATE.value],
+                arg_stock_data[1][StockDataField.IDX_VOLUMN.value],
+                arg_stock_data[1][StockDataField.IDX_MONEY.value],
+                arg_stock_data[1][StockDataField.IDX_OPEN.value],
+                arg_stock_data[1][StockDataField.IDX_MAX.value],
+                arg_stock_data[1][StockDataField.IDX_MIN.value],
+                arg_stock_data[1][StockDataField.IDX_CLOSE.value],
+                arg_stock_data[1][StockDataField.IDX_SPREAD.value],
+                arg_stock_data[1][StockDataField.IDX_COUNT.value])
+        else:
+            str_sql_cmd = DICT_SQL_CMD['SQL_CMD_UPDATE_STOCK_DATA'] % (
+                arg_stock_data[0],
+                arg_stock_data[1][StockDataField.IDX_VOLUMN.value],
+                arg_stock_data[1][StockDataField.IDX_MONEY.value],
+                arg_stock_data[1][StockDataField.IDX_OPEN.value],
+                arg_stock_data[1][StockDataField.IDX_MAX.value],
+                arg_stock_data[1][StockDataField.IDX_MIN.value],
+                arg_stock_data[1][StockDataField.IDX_CLOSE.value],
+                arg_stock_data[1][StockDataField.IDX_SPREAD.value],
+                arg_stock_data[1][StockDataField.IDX_COUNT.value],
+                arg_stock_data[1][StockDataField.IDX_DATE.value])
 
         self.__dbFactory.execute(str_sql_cmd)
         self.__dbFactory.commit()

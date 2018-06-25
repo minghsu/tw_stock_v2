@@ -32,11 +32,14 @@ class StockData:
         while not self.__queue.empty():
             dataItem = self.__queue.get()
             if (dataItem[0] == RetriveType.DATA):
-                self.__result.put(dataItem[1][1])
+                self.__result.put(dataItem[1])
             elif (dataItem[0] == RetriveType.INFO):
                 for i in range(len(self.__status)):
                     if (self.__status[i][0] == dataItem[1][0]):
                         self.__status[i][1] = dataItem[1][1]
+
+    def is_queue_empty(self):
+        return self.__queue.empty()
 
     def get_status(self):
         return self.__status
