@@ -27,8 +27,8 @@ DICT_STR_RESOURCE = {
     "STR_LISTED_COMPANY": "上市公司",
     "STR_OTC_COMPANY": "上櫃公司",
     "STR_MODULE_MISSED": "'%s' 套件未安裝!",
-    "STR_SYMBOL_DOWNLOADING": "正在下載股票代號資料 ...",
-    "STR_SYMBOL_UPDATING": "正在更新股票代號 %d%% ...",
+    "STR_SYMBOL_DOWNLOADING": "下載中 ...",
+    "STR_SYMBOL_UPDATING": "更新中 %3d %% ...",
     "STR_SYMBOL_UPDATED": "股票代號更新完成, 共有 %d 筆股票代號",
     "STR_HELP_MESSAGE": ("TW STOCK 命令交談模式幫助資訊:\n"
                          "輸入: help > 顯示幫助資訊\n"
@@ -42,8 +42,9 @@ DICT_STR_RESOURCE = {
                          "      remove [analyze type] > 移除要執行的技術分析"),
     "STR_SYMBOL_NOT_FOUND": "查無 %s 股票代號 ...",
     "STR_SYMBOL_INFO": " >>> 代號: %s, 名稱: %s, 上市日期: %s, 最後更新: %s, 交易總筆數: %d, 最後交易日: %s",
-    "STR_REQUEST_TIMEOUT": "連線要求逾時.",
-    "STR_DOWNLOADING": "下載中 ...",
+    "STR_SYMBOL_REQUEST_TIMEOUT": "連線要求逾時 ...",
     "STR_NOT_AVAILABLE": "不存在",
-    "STR_STOCK_DATA_FROM_1993": "收盤資料從1993年開始收錄, 系統將依情況自動調整擷取日期."
+    "STR_PREPARE_FETCH_STOCK_DATA": "準備截取 '%s' 股市收盤資料, 由 %s/%s 至 %s/%s",
+    "STR_STOCK_DATA_REQUEST_TIMEOUT": "%s: 截取 %s/%s 資料失敗, 預計 20 秒後重試.",
+    "STR_STOCK_DATA_UPDATING": "%s: 正在更新 %s/%s 資料                         ",
 }

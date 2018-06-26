@@ -28,8 +28,8 @@ DICT_STR_RESOURCE = {
     "STR_LISTED_COMPANY": "Listed Company",
     "STR_OTC_COMPANY": "OTC Company",
     "STR_MODULE_MISSED": "The '%s' package missed!",
-    "STR_SYMBOL_DOWNLOADING": "Downloading the stock symbol ...",
-    "STR_SYMBOL_UPDATING": "Updating the stock symbol %d%% ...",
+    "STR_SYMBOL_DOWNLOADING": "Downloading ...",
+    "STR_SYMBOL_UPDATING": "Updating %3d %% ...",
     "STR_SYMBOL_UPDATED": "The stock symbol already updated, there are %d stock symbols.",
     "STR_HELP_MESSAGE": ("The help information of TW STOCK in the interaction mode:\n"
                          "Type: help > Show this help information\n"
@@ -43,8 +43,9 @@ DICT_STR_RESOURCE = {
                          "      remove[type] > Remove exist technical analysis.\n"),
     "STR_SYMBOL_NOT_FOUND": "Can't found the %s stock symbol ...",
     "STR_SYMBOL_INFO": " >>> Symbol: %s, Name: %s, Listed Date: %s, Last Update: %s, Total Trade Count: %d, Last Trade Date: %s",
-    "STR_REQUEST_TIMEOUT": "Request timeout.",
-    "STR_DOWNLOADING": "Downloading ...",
+    "STR_SYMBOL_REQUEST_TIMEOUT": "Download request timeout.",
     "STR_NOT_AVAILABLE": "Not Available",
-    "STR_STOCK_DATA_FROM_1993": "The historical stock data from 1993, system may auto adjust the start date."
+    "STR_PREPARE_FETCH_STOCK_DATA": "Preparing to fetch '%s' stock data from %s/%s to %s/%s",
+    "STR_STOCK_DATA_REQUEST_TIMEOUT": "%s: Download %s/%s data fail, will try again after 20s.",
+    "STR_STOCK_DATA_UPDATING": "%s: Updating %s/%s data                                       ",
 }

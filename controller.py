@@ -16,12 +16,7 @@ import os.path
 import commander
 import viewer as viewer
 
-DEF_MULIT_PROCESS_SELLP_TIMER = 2
-
-# For dynamic update percentage
-# Ex: 正在更新股票代號 9% ...
-DEF_SYMBOL_UI_UPDATE_COUNT = 1000
-DEF_VIEWER_DELAY_TIMER = 0.1
+DEF_MULIT_PROCESS_SELLP_TIMER = 1
 
 
 class controller:
@@ -37,11 +32,15 @@ class controller:
     def __updating_symbol_message(self, arg_status):
         retStatus = ""
         for status in arg_status:
-            if (status[1] == Info.INFO_TIMEOUT):
+            if (status[1] == Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT):
                 tmp = "%s: %s" % (
-                    status[0], self.__strFactory.get_string(Info.INFO_TIMEOUT.value))
+                    self.__strFactory.get_string(status[0]), self.__strFactory.get_string(Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT.value))
+            elif (status[1] == Info.INFO_SYMBOL_DOWNLOADING):
+                tmp = "%s: %s" % (
+                    self.__strFactory.get_string(status[0]), self.__strFactory.get_string(Info.INFO_SYMBOL_DOWNLOADING.value))
             else:
-                tmp = "%s: %3d%%" % (status[0], status[1])
+                tmp = self.__strFactory.get_string(status[0]) + ": " + (self.__strFactory.get_string(
+                    'STR_SYMBOL_UPDATING') % (status[1]))
 
             if (retStatus != ""):
                 retStatus = retStatus + "\n"
@@ -52,11 +51,13 @@ class controller:
     def __updating_stock_data_message(self, arg_status):
         retStatus = ""
         for status in arg_status:
-            if (status[1] == Info.INFO_TIMEOUT):
-                tmp = "%s: %s" % (
-                    status[0], self.__strFactory.get_string(Info.INFO_TIMEOUT.value))
+            if (status[1] == Info.INFO_STOCK_DATA_DOWNLOAD_TIMEOUT):
+                tmp = self.__strFactory.get_string(Info.INFO_STOCK_DATA_DOWNLOAD_TIMEOUT.value) % (
+                    status[0], status[1][:4], status[1][4:])
+
             else:
-                tmp = "%s: %s" % (status[0], status[1])
+                tmp = self.__strFactory.get_string('STR_STOCK_DATA_UPDATING') % (
+                    status[0], status[1][:4], status[1][4:])
 
             if (retStatus != ""):
                 retStatus = retStatus + "\n"
@@ -119,12 +120,11 @@ class controller:
                 break
             if case(State.Update):
                 viewer.empty_string()
-                viewer.string(
-                    self.__strFactory.get_string('STR_SYMBOL_DOWNLOADING'))
-                viewer.empty_string()
-                self.__stocksymbol = StockSymbol(self.__strFactory)
+                self.__stocksymbol = StockSymbol()
                 self.__fetch_symbol_count = self.__stocksymbol.get_fetch_count()
-                self.__state = State.Downloading
+                self.__model.fetch_symbol_list()
+                self.__state = State.Updating
+                self.__symbol_info_updated_date = datetime.today().strftime("%Y/%m/%d")
                 viewer.string(self.__updating_symbol_message(
                     self.__stocksymbol.get_status()))
                 self.__stocksymbol.run()
@@ -143,34 +143,25 @@ class controller:
                 break
             if case(State.Updating):
                 self.__stocksymbol.retrive_data()
-                self.__symbolResult = self.__stocksymbol.get_result()
-                self.__model.fetch_symbol_list()
+                viewer.move_cursor_up(self.__fetch_symbol_count)
+                viewer.string(self.__updating_symbol_message(
+                    self.__stocksymbol.get_status()))
 
-                strUpdatedDate = datetime.today().strftime("%Y/%m/%d")
-                nSymbolCount = len(self.__symbolResult)
-                if (nSymbolCount > 0):
-                    for idx in range(nSymbolCount):
-                        self.__model.update_stock_symbol(
-                            self.__symbolResult[idx][1], strUpdatedDate)
+                symbol_info = self.__stocksymbol.get_result()
+                while (symbol_info != None):
+                    self.__model.update_stock_symbol(
+                        symbol_info[1], self.__symbol_info_updated_date)
+                    symbol_info = self.__stocksymbol.get_result()
 
-                        if (idx % DEF_SYMBOL_UI_UPDATE_COUNT == 0):
-                            if (idx != 0):
-                                viewer.move_cursor_up(1)
-                            viewer.string(self.__strFactory.get_string(
-                                'STR_SYMBOL_UPDATING') % (idx/nSymbolCount * 100))
-                            time.sleep(DEF_VIEWER_DELAY_TIMER)
-
-                    # Just for UI friendly ( show 100% finished )
-                    viewer.move_cursor_up(1)
+                if (self.__stocksymbol.is_alive() == False
+                        and self.__stocksymbol.is_queue_empty()):
+                    self.__model.fetch_symbol_list()
                     viewer.string(self.__strFactory.get_string(
-                        'STR_SYMBOL_UPDATING') % (100))
-
-                # update final symbol list and update lost count of stock symbol
-                self.__model.fetch_symbol_list()
-                viewer.string(self.__strFactory.get_string(
-                    'STR_SYMBOL_UPDATED') % (self.__model.get_symbol_count()))
-
-                self.__state = State.Input
+                        'STR_SYMBOL_UPDATED') % (self.__model.get_symbol_count()))
+                    viewer.empty_string()
+                    self.__state = State.Input
+                else:
+                    time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
             if case(State.Configure):
                 viewer.warning_string(self.__strFactory.get_string(
@@ -233,9 +224,6 @@ class controller:
                 break
             if case(State.CmdFetch):
                 if (self.__symbol_info):
-                    viewer.bold_string(self.__strFactory.get_string(
-                        'STR_STOCK_DATA_FROM_1993'))
-
                     stock_list = []
 
                     stock_symbol = self.__symbol_info[SymbolField.IDX_SYMBOL.value]
@@ -255,6 +243,15 @@ class controller:
                     self.__stockdata = StockData(stock_list)
                     self.__fetch_stock_count = self.__stockdata.get_fetch_count()
 
+                    viewer.empty_string()
+                    for i in range(self.__fetch_stock_count):
+                        viewer.bold_string(self.__strFactory.get_string(
+                            'STR_PREPARE_FETCH_STOCK_DATA') % (stock_list[i][0],
+                                                               stock_list[i][1][:4],
+                                                               stock_list[i][1][4:],
+                                                               stock_list[i][2][:4],
+                                                               stock_list[i][2][4:]))
+
                     viewer.string(self.__updating_stock_data_message(
                         self.__stockdata.get_status()))
                     self.__stockdata.run()
@@ -265,7 +262,6 @@ class controller:
             if case(State.Fetching):
                 self.__stockdata.retrive_data()
                 viewer.move_cursor_up(self.__fetch_stock_count)
-
                 viewer.string(self.__updating_stock_data_message(
                     self.__stockdata.get_status()))
 

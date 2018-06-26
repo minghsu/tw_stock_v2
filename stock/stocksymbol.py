@@ -13,16 +13,16 @@ DICT_CRAWL_CODE_URL = {
 
 
 class StockSymbol:
-    def __init__(self, arg_string_factory):
+    def __init__(self):
         self.__mp = []
         self.__status = []
-        self.__result = []
+        self.__result = Queue()
         self.__queue = Queue()
         for key, value in DICT_CRAWL_CODE_URL.items():
             self.__mp.append(
-                FetchSymbol(self.__queue, arg_string_factory.get_string(key), value))
+                FetchSymbol(self.__queue, key, value))
             self.__status.append(
-                [arg_string_factory.get_string(key), 0])
+                [key, Info.INFO_SYMBOL_DOWNLOADING])
 
     def get_fetch_count(self):
         return len(DICT_CRAWL_CODE_URL)
@@ -35,17 +35,22 @@ class StockSymbol:
         while not self.__queue.empty():
             dataItem = self.__queue.get()
             if (dataItem[0] == RetriveType.DATA):
-                self.__result.append(dataItem[1])
+                self.__result.put(dataItem[1])
             elif (dataItem[0] == RetriveType.INFO):
                 for i in range(len(self.__status)):
                     if (self.__status[i][0] == dataItem[1][0]):
                         self.__status[i][1] = dataItem[1][1]
 
+    def is_queue_empty(self):
+        return self.__queue.empty()
+
     def get_status(self):
         return self.__status
 
     def get_result(self):
-        return self.__result
+        if (not self.__result.empty()):
+            return self.__result.get()
+        return None
 
     def is_alive(self):
         while any(i.is_alive() for i in self.__mp):

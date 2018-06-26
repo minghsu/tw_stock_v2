@@ -20,7 +20,8 @@ class FetchSymbol(Process):
         self.__queue = arg_queue
         self.__type = arg_type
         self.__url = arg_url
-        self.__queue.put([RetriveType.INFO, [self.__type, 0]])
+        self.__queue.put(
+            [RetriveType.INFO, [self.__type, Info.INFO_SYMBOL_DOWNLOADING]])
 
     def run(self):
         fetchReq = urllib.request.Request(
@@ -35,7 +36,7 @@ class FetchSymbol(Process):
                 fetchReq, timeout=DEF_FETCH_SYMBOL_TIMEOUT)
         except:
             self.__queue.put(
-                [RetriveType.INFO, [self.__type, Info.INFO_TIMEOUT]])
+                [RetriveType.INFO, [self.__type, Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT]])
         else:
             url_content = url_response.read()
             url_content = url_content.decode('big5-hkscs').encode('utf-8')

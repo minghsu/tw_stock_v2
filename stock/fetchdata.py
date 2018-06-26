@@ -43,6 +43,9 @@ class FetchData(Process):
             current_date = DEF_STOCK_DATA_FROM_199301
 
         while (self.__stop_date >= current_date):
+            self.__queue.put(
+                [RetriveType.INFO, [self.__symbol, current_date]])
+
             fetch_url = DEF_CRAWL_STOCK_DATA_URL % (
                 current_date, self.__symbol)
 
