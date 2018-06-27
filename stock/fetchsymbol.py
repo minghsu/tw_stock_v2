@@ -20,8 +20,6 @@ class FetchSymbol(Process):
         self.__queue = arg_queue
         self.__type = arg_type
         self.__url = arg_url
-        self.__queue.put(
-            [RetriveType.INFO, [self.__type, Info.INFO_SYMBOL_DOWNLOADING]])
 
     def run(self):
         fetchReq = urllib.request.Request(

@@ -11,8 +11,6 @@ import random
 import urllib.request
 import json
 
-
-DEF_STOCK_DATA_FROM_199301 = "199301"
 DEF_FETCH_DATA_TIMEOUT = 10
 DEF_FETCH_DATA_SLEEP_TIME = 20
 DEF_CRAWL_STOCK_DATA_URL = "http://www.twse.com.tw/exchangeReport/STOCK_DAY?date=%s01&stockNo=%s"
@@ -38,9 +36,6 @@ class FetchData(Process):
 
     def run(self):
         current_date = self.__start_date
-
-        if (current_date < DEF_STOCK_DATA_FROM_199301):
-            current_date = DEF_STOCK_DATA_FROM_199301
 
         while (self.__stop_date >= current_date):
             self.__queue.put(
