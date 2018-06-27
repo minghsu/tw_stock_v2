@@ -7,5 +7,8 @@ This is a practice project of Python with some OO & Design Pattern concept, incl
 
 For more detail, will have specific document soon.
 
-PS. In OS X, please add below variable in your system environment
+PS. In my Mac OS environment, I have occurs two crash issue.
+
+Please add below variable in your system environment
 - export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+- export no_proxy='*'
