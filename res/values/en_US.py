@@ -47,5 +47,5 @@ DICT_STR_RESOURCE = {
     "STR_NOT_AVAILABLE": "Not Available",
     "STR_PREPARE_FETCH_STOCK_DATA": "Preparing to fetch '%s' stock data from %s/%s to %s/%s",
     "STR_STOCK_DATA_REQUEST_TIMEOUT": "%s: Download %s/%s data fail, will try again after 20s.",
-    "STR_STOCK_DATA_UPDATING": "%s: Updating %s/%s data                                       ",
+    "STR_STOCK_DATA_UPDATING": "%s: Updating %s/%s data",
 }

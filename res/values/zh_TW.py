@@ -46,5 +46,5 @@ DICT_STR_RESOURCE = {
     "STR_NOT_AVAILABLE": "不存在",
     "STR_PREPARE_FETCH_STOCK_DATA": "準備截取 '%s' 股市收盤資料, 由 %s/%s 至 %s/%s",
     "STR_STOCK_DATA_REQUEST_TIMEOUT": "%s: 截取 %s/%s 資料失敗, 預計 20 秒後重試.",
-    "STR_STOCK_DATA_UPDATING": "%s: 正在更新 %s/%s 資料                         ",
+    "STR_STOCK_DATA_UPDATING": "%s: 正在更新 %s/%s 資料",
 }

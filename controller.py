@@ -17,6 +17,7 @@ import commander
 import viewer as viewer
 
 DEF_MULIT_PROCESS_SELLP_TIMER = 1
+DEF_LENGTH_STOCK_DATA_MESSAGE = 60
 
 
 class controller:
@@ -60,7 +61,8 @@ class controller:
                     status[0], status[1][:4], status[1][4:])
 
             if (retStatus != ""):
-                retStatus = retStatus + "\n"
+                retStatus = retStatus.ljust(
+                    DEF_LENGTH_STOCK_DATA_MESSAGE, " ") + "\n"
             retStatus = retStatus + tmp
 
         return retStatus
