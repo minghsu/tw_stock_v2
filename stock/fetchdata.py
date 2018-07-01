@@ -55,10 +55,6 @@ class FetchData(Process):
             try:
                 json_response = urllib.request.urlopen(
                     fetchReq, timeout=DEF_FETCH_DATA_TIMEOUT).read()
-            except:
-                self.__queue.put(
-                    [RetriveType.INFO, [self.__symbol, Info.INFO_TIMEOUT]])
-            else:
                 json_contents = json.loads(json_response)
                 for trade_info in json_contents['data']:
                     self.__queue.put(
@@ -76,5 +72,8 @@ class FetchData(Process):
                 current_date = self.__get_next_date(current_date)
                 self.__queue.put(
                     [RetriveType.INFO, [self.__symbol, current_date]])
+            except:
+                self.__queue.put(
+                    [RetriveType.INFO, [self.__symbol, Info.INFO_TIMEOUT]])
             finally:
                 time.sleep(DEF_FETCH_DATA_SLEEP_TIME)

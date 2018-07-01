@@ -3,7 +3,9 @@
 
 from databases.dbfactory import DbFactory
 from constant.stock import SymbolField, StockDB, StockDataField
-from utils.utility import util_binary_search_idx
+from utils.utility import util_binary_search_idx, util_get_basename
+
+import logging
 
 DICT_SQL_CMD = {
     "SQL_CMD_FETCH_ALL_SYMBOL_INFO": ("SELECT symbol, name, create_date, update_date FROM "
@@ -29,6 +31,7 @@ class modeler:
     def __init__(self):
         self.__dbFactory = DbFactory()
         self.__SymbolInfoList = ()
+        self.__logging = logging.getLogger(util_get_basename(__file__))
 
     def get_db_module_list(self):
         return self.__dbFactory.get_db_module_list()
@@ -80,6 +83,7 @@ class modeler:
                 arg_update_date,
                 arg_symbol_item[SymbolField.IDX_SYMBOL.value])
 
+        self.__logging.debug(str_sql_cmd)
         self.__dbFactory.execute(str_sql_cmd)
         self.__dbFactory.commit()
 
@@ -111,6 +115,7 @@ class modeler:
                 arg_stock_data[1][StockDataField.IDX_COUNT.value],
                 arg_stock_data[1][StockDataField.IDX_DATE.value])
 
+        self.__logging.debug(str_sql_cmd)
         self.__dbFactory.execute(str_sql_cmd)
         self.__dbFactory.commit()
 

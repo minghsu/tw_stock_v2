@@ -3,6 +3,8 @@
 
 from constant.stock import SymbolField
 
+import os.path
+
 
 def util_binary_search_idx(arg_stock_list, arg_list_idx, arg_com_data):
 
@@ -23,3 +25,7 @@ def util_binary_search_idx(arg_stock_list, arg_list_idx, arg_com_data):
 def util_convert_roc_to_ad_year(arg_roc_year):
     tmpYear = arg_roc_year[0:arg_roc_year.find("/")]
     return str((int(tmpYear)+1911)) + arg_roc_year[arg_roc_year.find("/"):]
+
+
+def util_get_basename(arg_file_name):
+    return os.path.basename(arg_file_name)

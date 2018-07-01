@@ -10,11 +10,12 @@ from databases.dbconfigure import DbConfigure
 from stock.stocksymbol import StockSymbol
 from stock.stockdata import StockData
 from datetime import datetime
+from utils.utility import util_get_basename
 
 import time
-import os.path
 import commander
 import viewer as viewer
+import logging
 
 DEF_MULIT_PROCESS_SELLP_TIMER = 1
 DEF_LENGTH_STOCK_DATA_MESSAGE = 60
@@ -29,6 +30,7 @@ class controller:
         self.__strCmd = None
         self.__parameter = None
         self.__symbol_info = None
+        self.__logging = logging.getLogger(util_get_basename(__file__))
 
     def __updating_symbol_message(self, arg_status):
         retStatus = ""
@@ -68,6 +70,7 @@ class controller:
         return retStatus
 
     def do_job(self):
+        self.__logging.debug(self.__state)
         for case in Switch(self.__state):
             if case(State.Exit):
                 self.__model.close()
