@@ -7,6 +7,8 @@ import locale
 DEF_MAJOR_VERSION = 2
 DEF_MINOR_VERSION = 0
 
+DEF_DEFAULT_LANG = "en_US"
+
 
 class StringFactory:
     def __init__(self):
@@ -15,7 +17,8 @@ class StringFactory:
             self.__module = importlib.import_module(
                 "res.values.%s" % (self.__locale))
         except:
-            self.__module = importlib.import_module("res.values.en_US")
+            self.__module = importlib.import_module(
+                "res.values.%s" % (DEF_DEFAULT_LANG))
         self.__dict = self.__module.DICT_STR_RESOURCE
 
     def get_version(self):

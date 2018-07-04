@@ -70,10 +70,11 @@ class FetchData(Process):
                                              trade_info[StockDataField.IDX_COUNT.value]]]])
 
                 current_date = self.__get_next_date(current_date)
-                self.__queue.put(
-                    [RetriveType.INFO, [self.__symbol, current_date]])
+                if (self.__stop_date < current_date):
+                    break
+                else:
+                    time.sleep(DEF_FETCH_DATA_SLEEP_TIME)
             except:
                 self.__queue.put(
                     [RetriveType.INFO, [self.__symbol, Info.INFO_TIMEOUT]])
-            finally:
                 time.sleep(DEF_FETCH_DATA_SLEEP_TIME)

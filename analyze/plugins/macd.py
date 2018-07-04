@@ -4,12 +4,12 @@
 from .. baseanalysis import BaseAnalyer
 
 
-class kdj(BaseAnalyer):
+class macd(BaseAnalyer):
     def __init__(self):
         pass
 
     def name(self):
-        return "KDJ"
+        return "MACD"
 
     def colnum_info(self):
-        return (3, ("K", "D", "J"))
+        return (1, ("MACD"))

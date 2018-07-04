@@ -30,5 +30,8 @@ def cmdParser(argCommand):
         if case("fetch"):
             retState = State.CmdFetch
             break
+        if case("analyze"):
+            retState = State.Analyze
+            break
 
     return (retState, retParameter)

@@ -15,8 +15,8 @@ DICT_SQL_CMD = {
                                     " VALUES ('%s','%s','%s','%s')"),
     "SQL_CMD_UPDATE_STOCK_SYMBOL": ("UPDATE " + StockDB.STR_STOCK_SYMBOL_TABLE_NAME.value +
                                     " SET update_date = '%s' where symbol='%s'"),
-    "SQL_CMD_FETCH_SYMBOL_TRADE_DATE_LIST": ("SELECT trade_date FROM "
-                                             + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s ORDER BY trade_date"),
+    "SQL_CMD_FETCH_ALL_STOCK_DATA": ("SELECT trade_date, trade_volumn, trade_money, trade_open, trade_max, trade_min, trade_end, trade_spread, trade_count FROM "
+                                     + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s ORDER BY trade_date"),
     "SQL_CMD_INSERT_STOCK_DATA": ("INSERT INTO " + StockDB.STR_STOCK_DATA_TABLE_PREFIX.value + "%s"
                                   " (trade_date, trade_volumn, trade_money, trade_open, trade_max, trade_min, trade_end, trade_spread, trade_count)"
                                   " VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"),
@@ -58,17 +58,17 @@ class modeler:
     def get_symbol_count(self):
         return self.__SymbolCount
 
-    def fetch_symbol_trade_date_list(self, arg_symbol):
-        self.__SymbolTradeCount, self.__SymbolTradeDateList = self.__dbFactory.query(
-            DICT_SQL_CMD['SQL_CMD_FETCH_SYMBOL_TRADE_DATE_LIST'] % (arg_symbol))
+    def fetch_all_stock_data(self, arg_symbol):
+        self.__SymbolDataCount, self.__SymbolDataList = self.__dbFactory.query(
+            DICT_SQL_CMD['SQL_CMD_FETCH_ALL_STOCK_DATA'] % (arg_symbol))
 
     def get_symbol_trade_count(self):
-        return self.__SymbolTradeCount
+        return self.__SymbolDataCount
 
     def get_stock_last_trade_date(self):
-        if (self.__SymbolTradeCount == 0):
+        if (self.__SymbolDataCount == 0):
             return None
-        return self.__SymbolTradeDateList[self.__SymbolTradeCount-1]
+        return self.__SymbolDataList[self.__SymbolDataCount-1][StockDataField.IDX_DATE.value]
 
     def update_stock_symbol(self, arg_symbol_item, arg_update_date):
         str_sql_cmd = ""
@@ -90,7 +90,7 @@ class modeler:
     def update_stock_data(self, arg_stock_data):
         str_sql_cmd = ""
 
-        if (util_binary_search_idx(self.__SymbolTradeDateList, 0, arg_stock_data[1][StockDataField.IDX_DATE.value]) == None):
+        if (util_binary_search_idx(self.__SymbolDataList, 0, arg_stock_data[1][StockDataField.IDX_DATE.value]) == None):
             str_sql_cmd = DICT_SQL_CMD['SQL_CMD_INSERT_STOCK_DATA'] % (
                 arg_stock_data[0],
                 arg_stock_data[1][StockDataField.IDX_DATE.value],

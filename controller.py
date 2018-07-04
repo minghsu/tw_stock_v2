@@ -11,6 +11,7 @@ from stock.stocksymbol import StockSymbol
 from stock.stockdata import StockData
 from datetime import datetime
 from utils.utility import util_get_basename
+from analyze.analyzer import Analyer
 
 import time
 import commander
@@ -30,7 +31,23 @@ class controller:
         self.__strCmd = None
         self.__parameter = None
         self.__symbol_info = None
+        self.__symbol = None
         self.__logging = logging.getLogger(util_get_basename(__file__))
+        self.__analyzer = Analyer()
+
+    def __update_symbol_use_info(self):
+        last_trade_date = self.__model.get_stock_last_trade_date()
+        if (last_trade_date == None):
+            last_trade_date = self.__strFactory.get_string(
+                'STR_NOT_AVAILABLE')
+
+        retStatus = self.__strFactory.get_string('STR_SYMBOL_INFO') % (self.__symbol_info[SymbolField.IDX_SYMBOL.value],
+                                                                       self.__symbol_info[SymbolField.IDX_NAME.value],
+                                                                       self.__symbol_info[SymbolField.IDX_CREATE_DATE.value],
+                                                                       self.__symbol_info[SymbolField.IDX_UPDATED_DATE.value],
+                                                                       self.__model.get_symbol_trade_count(),
+                                                                       last_trade_date)
+        return retStatus
 
     def __updating_symbol_message(self, arg_status):
         retStatus = ""
@@ -277,39 +294,34 @@ class controller:
 
                 if (self.__stockdata.is_alive() == False
                         and self.__stockdata.is_queue_empty()):
+                    self.__model.fetch_all_stock_data(self.__symbol)
+                    viewer.bold_string(self.__update_symbol_use_info())
                     viewer.empty_string()
                     self.__state = State.Input
                 else:
                     time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
-
                 break
             if case(State.CmdUse):
+                self.__symbol = self.__parameter
                 self.__symbol_info = self.__model.get_symbol_info(
-                    self.__parameter)
+                    self.__symbol)
                 if (self.__symbol_info != None):
-                    self.__consoles.set_used_symbol(self.__parameter)
-                    self.__model.create_stock_data_table(self.__parameter)
-                    self.__model.fetch_symbol_trade_date_list(self.__parameter)
-
-                    last_trade_date = self.__model.get_stock_last_trade_date()
-                    if (last_trade_date == None):
-                        last_trade_date = self.__strFactory.get_string(
-                            'STR_NOT_AVAILABLE')
-                    else:
-                        last_trade_date = last_trade_date[0]
-                    viewer.bold_string(
-                        self.__strFactory.get_string('STR_SYMBOL_INFO') % (
-                            self.__symbol_info[SymbolField.IDX_SYMBOL.value],
-                            self.__symbol_info[SymbolField.IDX_NAME.value],
-                            self.__symbol_info[SymbolField.IDX_CREATE_DATE.value],
-                            self.__symbol_info[SymbolField.IDX_UPDATED_DATE.value],
-                            self.__model.get_symbol_trade_count(),
-                            last_trade_date))
+                    self.__consoles.set_used_symbol(self.__symbol)
+                    self.__model.create_stock_data_table(self.__symbol)
+                    self.__model.fetch_all_stock_data(self.__symbol)
+                    viewer.bold_string(self.__update_symbol_use_info())
                 else:
                     viewer.string(
-                        self.__strFactory.get_string('STR_SYMBOL_NOT_FOUND') % (self.__parameter))
+                        self.__strFactory.get_string('STR_SYMBOL_NOT_FOUND') % (self.__symbol))
                     self.__parameter = ""
 
+                self.__state = State.Input
+                break
+            if case(State.Analyze):
+                viewer.empty_string()
+                viewer.string(self.__strFactory.get_string(
+                    'STR_STOCK_ANALYSIS_SUPPORTED') % (self.__analyzer.get_plugins()))
+                viewer.empty_string()
                 self.__state = State.Input
                 break
         return True
