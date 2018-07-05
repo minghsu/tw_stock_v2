@@ -322,6 +322,7 @@ class controller:
                 viewer.string(self.__strFactory.get_string(
                     'STR_STOCK_ANALYSIS_SUPPORTED') % (self.__analyzer.get_plugins()))
                 viewer.empty_string()
+                self.__analyzer.set_data(self.__model.get_stock_data())
                 self.__state = State.Input
                 break
         return True

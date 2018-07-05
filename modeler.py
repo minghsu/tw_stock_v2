@@ -65,6 +65,9 @@ class modeler:
     def get_symbol_trade_count(self):
         return self.__SymbolDataCount
 
+    def get_stock_data(self):
+        return self.__SymbolDataList
+
     def get_stock_last_trade_date(self):
         if (self.__SymbolDataCount == 0):
             return None
