@@ -33,7 +33,7 @@ class controller:
         self.__symbol_info = None
         self.__symbol = None
         self.__logging = logging.getLogger(util_get_basename(__file__))
-        self.__analyzer = Analyer()
+        self.__analyzer = None
 
     def __update_symbol_use_info(self):
         last_trade_date = self.__model.get_stock_last_trade_date()
@@ -318,11 +318,19 @@ class controller:
                 self.__state = State.Input
                 break
             if case(State.Analyze):
+                self.__analyzer = Analyer()
                 viewer.empty_string()
                 viewer.string(self.__strFactory.get_string(
                     'STR_STOCK_ANALYSIS_SUPPORTED') % (self.__analyzer.get_plugins()))
                 viewer.empty_string()
                 self.__analyzer.set_data(self.__model.get_stock_data())
-                self.__state = State.Input
+                self.__analyzer.run()
+                self.__state = State.Analying
+                break
+            if case(State.Analying):
+                if not self.__analyzer.is_alive():
+                    self.__state = State.Input
+                else:
+                    time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
         return True
