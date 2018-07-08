@@ -27,18 +27,18 @@ class kdj(Process, BaseAnalyer):
                 self.__slow_d_period = kwargs[key]
 
     def name(self):
-        return "KDJ"
+        return "K/D/J"
 
     def colnum_info(self):
         return (3, ("K", "D", "J"))
 
-    def get_max_min_value(self, arg_current_idx):
-        ret_max = float(self.__data[arg_current_idx]
+    def get_max_min_value(self, arg_idx):
+        ret_max = float(self.__data[arg_idx]
                         [StockDataField.IDX_MAX.value])
-        ret_min = float(self.__data[arg_current_idx]
+        ret_min = float(self.__data[arg_idx]
                         [StockDataField.IDX_MIN.value])
 
-        for j in range(arg_current_idx - self.__fast_k_period, arg_current_idx):
+        for j in range(arg_idx - self.__fast_k_period + 1, arg_idx + 1):
             if ret_max < float(self.__data[j][StockDataField.IDX_MAX.value]):
                 ret_max = float(self.__data[j][StockDataField.IDX_MAX.value])
             if ret_min > float(self.__data[j][StockDataField.IDX_MIN.value]):
@@ -53,7 +53,7 @@ class kdj(Process, BaseAnalyer):
             last_k_val = k_val
             last_d_val = d_val
             if (i < self.__fast_k_period - 1):
-                self.__result.put([RetriveType.DATA, ["N/A", "N/A", "N/A"]])
+                self.__result.put([RetriveType.DATA, [None, None, None]])
             elif (i == self.__fast_k_period - 1):
                 self.__result.put([RetriveType.DATA, [50, 50, 50]])
                 k_val = 50
@@ -64,13 +64,10 @@ class kdj(Process, BaseAnalyer):
                     100*(float(self.__data[i][StockDataField.IDX_CLOSE.value])-min)/(max-min))
 
                 k_val = float('%.2f' % ((1/self.__slow_k_period) *
-                                        rsv + (2/self.__slow_d_period) * last_k_val))
+                                        rsv + (2/self.__slow_k_period) * last_k_val))
                 d_val = float('%.2f' % ((1/self.__slow_d_period) *
                                         k_val + (2/self.__slow_d_period) * last_d_val))
                 j_val = float('%.2f' % ((d_val*3) - (k_val*2)))
-
-                print("[DEBUG] %s, last k %.2f, last d %.2f, max %.2f, min %.2f, k %.2f, d %.2f, j %.2f, rsv %.2f" %
-                      (self.__data[i][StockDataField.IDX_DATE.value], last_k_val, last_d_val, max, min, k_val, d_val, j_val, rsv))
                 self.__result.put([RetriveType.DATA, [k_val, d_val, j_val]])
 
         self.__result.put(

@@ -257,8 +257,7 @@ class controller:
                     if (stock_start_date == None):
                         stock_start_date = self.__symbol_info[SymbolField.IDX_CREATE_DATE.value]
                     else:
-                        stock_start_date = stock_start_date[0]
-
+                        stock_start_date = stock_start_date
                     stock_start_date = datetime.strptime(
                         stock_start_date, '%Y/%m/%d').strftime("%Y%m")
 
