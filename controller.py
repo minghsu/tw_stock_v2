@@ -49,21 +49,34 @@ class controller:
                                                                        last_trade_date)
         return retStatus
 
+    def __update_analysis_info(self, arg_status):
+        return
+        retStatus = ""
+        for status in arg_status:
+            tmp = "%10s: %s" % (
+                status[0], self.__strFactory.get_string(status[1].value))
+
+            if (retStatus != ""):
+                retStatus = retStatus.ljust(
+                    DEF_LENGTH_STOCK_DATA_MESSAGE, " ") + "\n"
+            retStatus = retStatus + tmp
+
+        return retStatus
+
     def __updating_symbol_message(self, arg_status):
         retStatus = ""
         for status in arg_status:
-            if (status[1] == Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT):
+            if (status[1] == Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT or
+                    status[1] == Info.INFO_SYMBOL_DOWNLOADING):
                 tmp = "%s: %s" % (
-                    self.__strFactory.get_string(status[0]), self.__strFactory.get_string(Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT.value))
-            elif (status[1] == Info.INFO_SYMBOL_DOWNLOADING):
-                tmp = "%s: %s" % (
-                    self.__strFactory.get_string(status[0]), self.__strFactory.get_string(Info.INFO_SYMBOL_DOWNLOADING.value))
+                    self.__strFactory.get_string(status[0]), self.__strFactory.get_string(status[1].value))
             else:
                 tmp = self.__strFactory.get_string(status[0]) + ": " + (self.__strFactory.get_string(
                     'STR_SYMBOL_UPDATING') % (status[1]))
 
             if (retStatus != ""):
-                retStatus = retStatus + "\n"
+                retStatus = retStatus.ljust(
+                    DEF_LENGTH_STOCK_DATA_MESSAGE, " ") + "\n"
             retStatus = retStatus + tmp
 
         return retStatus
@@ -151,17 +164,6 @@ class controller:
                     self.__stocksymbol.get_status()))
                 self.__stocksymbol.run()
                 time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
-                break
-            if case(State.Downloading):
-                self.__stocksymbol.retrive_data()
-                viewer.move_cursor_up(self.__fetch_symbol_count)
-                viewer.string(self.__updating_symbol_message(
-                    self.__stocksymbol.get_status()))
-                if (self.__stocksymbol.is_alive() == False):
-                    viewer.empty_string()
-                    self.__state = State.Updating
-                else:
-                    time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
             if case(State.Updating):
                 self.__stocksymbol.retrive_data()
@@ -319,16 +321,31 @@ class controller:
                 break
             if case(State.Analyze):
                 self.__analyzer = Analyer()
-                viewer.empty_string()
-                viewer.string(self.__strFactory.get_string(
-                    'STR_STOCK_ANALYSIS_SUPPORTED') % (self.__analyzer.get_plugins()))
-                viewer.empty_string()
-                self.__analyzer.set_data(self.__model.get_stock_data())
-                self.__analyzer.run()
-                self.__state = State.Analying
+                if self.__parameter == "?":
+                    viewer.empty_string()
+                    viewer.string(self.__strFactory.get_string(
+                        'STR_STOCK_ANALYSIS_SUPPORTED') % (self.__analyzer.get_plugins()))
+                    viewer.empty_string()
+                    self.__state = State.Input
+                else:
+                    self.__analyzer.set_data(self.__model.get_stock_data())
+                    self.__analyzer.run()
+                    self.__state = State.Analying
+                    viewer.string(self.__update_analysis_info(
+                        self.__analyzer.get_status()))
+                    time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
             if case(State.Analying):
-                if not self.__analyzer.is_alive():
+                self.__analyzer.retrive_data()
+                viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                viewer.string(self.__update_analysis_info(
+                    self.__analyzer.get_status()))
+
+                if (self.__analyzer.is_alive() == False and
+                        self.__analyzer.is_queue_empty()):
+                    viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                    viewer.string(self.__update_analysis_info(
+                        self.__analyzer.get_status()))
                     self.__state = State.Input
                 else:
                     time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)

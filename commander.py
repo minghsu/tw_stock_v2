@@ -32,6 +32,8 @@ def cmdParser(argCommand):
             break
         if case("analyze"):
             retState = State.Analyze
+            if (len(splitCmd) > 1):
+                retParameter = splitCmd[1]
             break
 
     return (retState, retParameter)

@@ -48,4 +48,6 @@ DICT_STR_RESOURCE = {
     "STR_STOCK_DATA_REQUEST_TIMEOUT": "%s: 截取 %s/%s 資料失敗, 預計 20 秒後重試.",
     "STR_STOCK_DATA_UPDATING": "%s: 正在更新 %s/%s 資料",
     "STR_STOCK_ANALYSIS_SUPPORTED": "支持的技術分析: %s",
+    "STR_CALCULATING": "正在計算中 ...",
+    "STR_CALCULATED": "已計算完成",
 }

@@ -49,4 +49,6 @@ DICT_STR_RESOURCE = {
     "STR_STOCK_DATA_REQUEST_TIMEOUT": "%s: Download %s/%s data fail, will try again after 20s.",
     "STR_STOCK_DATA_UPDATING": "%s: Updating %s/%s data",
     "STR_STOCK_ANALYSIS_SUPPORTED": "Supported stock analysis: %s",
+    "STR_CALCULATING": "Calculating ...",
+    "STR_CALCULATED": "Calculated !",
 }

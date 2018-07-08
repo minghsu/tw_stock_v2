@@ -32,13 +32,12 @@ class FetchSymbol(Process):
         try:
             url_response = urllib.request.urlopen(
                 fetchReq, timeout=DEF_FETCH_SYMBOL_TIMEOUT)
+            url_content = url_response.read()
         except:
             self.__queue.put(
                 [RetriveType.INFO, [self.__type, Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT]])
         else:
-            url_content = url_response.read()
             url_content = url_content.decode('big5-hkscs').encode('utf-8')
-
             html_content = etree.HTML(
                 url_content, parser=etree.HTMLParser(encoding='utf-8'))
             tr_contents = html_content.xpath("//table[2]/tr")
