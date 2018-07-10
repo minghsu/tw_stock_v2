@@ -326,24 +326,27 @@ class controller:
                     viewer.empty_string()
                     self.__state = State.Input
                 else:
-                    self.__analyzer.set_data(self.__model.get_stock_data())
-                    self.__analyzer.run()
-                    self.__state = State.Analying
-                    viewer.string(self.__update_analysis_info(
-                        self.__analyzer.get_status()))
-                    time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
+                    if self.__symbol == None:
+                        self.__state = State.CmdError
+                    else:
+                        self.__analyzer.set_data(self.__model.get_stock_data())
+                        self.__analyzer.run()
+                        self.__state = State.Analying
+                        viewer.string(self.__update_analysis_info(
+                            self.__analyzer.get_status()))
+                        time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
                 break
             if case(State.Analying):
                 self.__analyzer.retrive_data()
-                # viewer.move_cursor_up(self.__analyzer.get_plugins_count())
-                # viewer.string(self.__update_analysis_info(
-                #    self.__analyzer.get_status()))
+                viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                viewer.string(self.__update_analysis_info(
+                    self.__analyzer.get_status()))
 
                 if (self.__analyzer.is_alive() == False and
                         self.__analyzer.is_queue_empty()):
-                    # viewer.move_cursor_up(self.__analyzer.get_plugins_count())
-                    # viewer.string(self.__update_analysis_info(
-                    #    self.__analyzer.get_status()))
+                    viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                    viewer.string(self.__update_analysis_info(
+                        self.__analyzer.get_status()))
                     self.__state = State.Input
                 else:
                     time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)

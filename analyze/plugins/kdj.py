@@ -5,6 +5,9 @@ from multiprocessing import Process
 from .. baseanalysis import BaseAnalyer
 from constant.stock import Info, RetriveType, StockDataField
 
+import time
+DEF_SLEEP_TIMER = 2
+
 
 class kdj(Process, BaseAnalyer):
     def __init__(self, arg_share_data, arg_queue, **kwargs):
@@ -72,3 +75,5 @@ class kdj(Process, BaseAnalyer):
 
         self.__result.put(
             [RetriveType.INFO, [self.name, Info.INFO_CALCULATED]])
+
+        time.sleep(DEF_SLEEP_TIMER)
