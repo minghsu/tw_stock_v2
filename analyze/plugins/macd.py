@@ -7,7 +7,7 @@ from constant.stock import Info, RetriveType, StockDataField
 from enum import Enum, unique
 
 import time
-DEF_SLEEP_TIMER = 2
+DEF_SLEEP_TIMER = 5
 
 
 @unique
@@ -28,7 +28,7 @@ class macd(Process, BaseAnalyer):
     def __init__(self, arg_share_data, arg_queue, **kwargs):
         super(macd, self).__init__()
         self.__data = arg_share_data
-        self.__queue = arg_queue
+        self.queue = arg_queue
         self.__tmp_calc_fields = []
         self.__result = []
 
@@ -46,7 +46,7 @@ class macd(Process, BaseAnalyer):
             elif key == "dif":
                 self.__dif = kwargs[key]
 
-    def name(self):
+    def analysis_name(self):
         return "MACD/OSC"
 
     def colnum_info(self):
@@ -74,6 +74,8 @@ class macd(Process, BaseAnalyer):
         return ret_macd
 
     def run(self):
+        time.sleep(DEF_SLEEP_TIMER)
+
         # MACD, OSC
         self.__result = [[0, 0]] * len(self.__data)
         # DI, EMA1, EMA2, DIF
@@ -135,8 +137,6 @@ class macd(Process, BaseAnalyer):
                 self.__result[i][ResultField.IDX_OSC.value] = (self.__tmp_calc_fields[i][CalcField.IDX_DIF.value] -
                                                                self.__result[i][ResultField.IDX_MACD.value])
 
-        #self.__queue.put([RetriveType.DATA, [self.name, self.__result]])
-        self.__queue.put(
-            [RetriveType.INFO, [self.name, Info.INFO_CALCULATED]])
-
-        time.sleep(DEF_SLEEP_TIMER)
+        self.queue.put([RetriveType.DATA, [self.name, self.__result]])
+        self.queue.put(
+            [RetriveType.INFO, [self.analysis_name(), Info.INFO_CALCULATED]])

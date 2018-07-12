@@ -6,14 +6,14 @@ from .. baseanalysis import BaseAnalyer
 from constant.stock import Info, RetriveType, StockDataField
 
 import time
-DEF_SLEEP_TIMER = 2
+DEF_SLEEP_TIMER = 5
 
 
 class kdj(Process, BaseAnalyer):
     def __init__(self, arg_share_data, arg_queue, **kwargs):
         super(kdj, self).__init__()
         self.__data = arg_share_data
-        self.__result = arg_queue
+        self.queue = arg_queue
 
         # default parameters
         self.__fast_k_period = 9
@@ -29,7 +29,7 @@ class kdj(Process, BaseAnalyer):
             elif key == "slow_d_period":
                 self.__slow_d_period = kwargs[key]
 
-    def name(self):
+    def analysis_name(self):
         return "K/D/J"
 
     def colnum_info(self):
@@ -50,15 +50,17 @@ class kdj(Process, BaseAnalyer):
         return (ret_max, ret_min)
 
     def run(self):
+        time.sleep(DEF_SLEEP_TIMER)
+
         k_val = 0
         d_val = 0
         for i in range(len(self.__data)):
             last_k_val = k_val
             last_d_val = d_val
             if (i < self.__fast_k_period - 1):
-                self.__result.put([RetriveType.DATA, [None, None, None]])
+                self.queue.put([RetriveType.DATA, [None, None, None]])
             elif (i == self.__fast_k_period - 1):
-                self.__result.put([RetriveType.DATA, [50, 50, 50]])
+                self.queue.put([RetriveType.DATA, [50, 50, 50]])
                 k_val = 50
                 d_val = 50
             else:
@@ -71,9 +73,7 @@ class kdj(Process, BaseAnalyer):
                 d_val = float('%.2f' % ((1/self.__slow_d_period) *
                                         k_val + (2/self.__slow_d_period) * last_d_val))
                 j_val = float('%.2f' % ((d_val*3) - (k_val*2)))
-                self.__result.put([RetriveType.DATA, [k_val, d_val, j_val]])
+                self.queue.put([RetriveType.DATA, [k_val, d_val, j_val]])
 
-        self.__result.put(
-            [RetriveType.INFO, [self.name, Info.INFO_CALCULATED]])
-
-        time.sleep(DEF_SLEEP_TIMER)
+        self.queue.put(
+            [RetriveType.INFO, [self.analysis_name(), Info.INFO_CALCULATED]])

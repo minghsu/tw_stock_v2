@@ -26,7 +26,7 @@ class Analyer:
                 instanceClass = getattr(plugins_class, name)(
                     self.__manager.list(), None)
                 self.__plugins.append(
-                    [name, instanceClass.name(), instanceClass.colnum_info(), True])
+                    [name, instanceClass.analysis_name(), instanceClass.colnum_info(), True])
 
     def get_plugins(self):
         retPlugins = ""
@@ -44,8 +44,8 @@ class Analyer:
         self.__share_data = self.__manager.list(arg_data)
 
     def run(self):
-        self.__mp = []
-        self.__status = []
+        self.__mp.clear()
+        self.__status.clear()
         i = 0
         for plugins in self.__plugins:
             if plugins[AnalyzeFieldIdx.IDX_IS_EXECUTE.value]:

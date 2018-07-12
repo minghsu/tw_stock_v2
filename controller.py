@@ -52,12 +52,11 @@ class controller:
     def __update_analysis_info(self, arg_status):
         retStatus = ""
         for status in arg_status:
-            tmp = "%10s: %s" % (
+            tmp = "%10s: %-60s" % (
                 status[0], self.__strFactory.get_string(status[1].value))
 
             if (retStatus != ""):
-                retStatus = retStatus.ljust(
-                    DEF_LENGTH_STOCK_DATA_MESSAGE, " ") + "\n"
+                retStatus += "\n"
             retStatus = retStatus + tmp
 
         return retStatus
