@@ -50,7 +50,7 @@ class macd(Process, BaseAnalyer):
         return "MACD/OSC"
 
     def colnum_info(self):
-        return (2, ("MACD", "OSC"))
+        return ("MACD", "OSC")
 
     def get_ema(self, arg_idx, arg_previous_ema, arg_period):
         ret_ema = float("%.2f" % (((arg_previous_ema * (arg_period-1)) +
@@ -77,7 +77,7 @@ class macd(Process, BaseAnalyer):
         time.sleep(DEF_SLEEP_TIMER)
 
         # MACD, OSC
-        self.__result = [[0, 0]] * len(self.__data)
+        self.__result = []
         # DI, EMA1, EMA2, DIF
         self.__tmp_calc_fields = [[0, 0, 0, 0]] * len(self.__data)
 
@@ -85,6 +85,7 @@ class macd(Process, BaseAnalyer):
         first_ema2 = float(0)
         first_macd = float(0)
 
+        prev_macd = 0
         for i, stock_data in enumerate(self.__data):
 
             # DI: (MAX + MIN + (CLOSE * 2)) / 4
@@ -119,23 +120,29 @@ class macd(Process, BaseAnalyer):
                 self.__tmp_calc_fields[i][CalcField.IDX_DIF.value] = self.__tmp_calc_fields[i][
                     CalcField.IDX_EMA1.value] - self.__tmp_calc_fields[i][CalcField.IDX_EMA2.value]
 
+            macd = 0
+            osc = 0
             # MACD
             if (i <= (self.__ema2 + self.__dif - 1)):
                 first_macd = first_macd + \
                     self.__tmp_calc_fields[i][CalcField.IDX_DIF.value]
 
-                # 1st MACD
-                if (i == (self.__ema2 + self.__dif - 1)):
-                    self.__result[i][ResultField.IDX_MACD.value] = first_macd / self.__dif
-
+            # 1st MACD
+            if (i == (self.__ema2 + self.__dif - 1)):
+                macd = first_macd / self.__dif
             elif (i >= self.__ema2 + self.__dif):
                 # Other MACD
-                self.__result[i][ResultField.IDX_MACD.value] = self.get_macd(i)
+                macd = float("%.2f" % (((prev_macd * (self.__dif - 1)) +
+                                        (self.__tmp_calc_fields[i]
+                                         [CalcField.IDX_DI.value]*2)) / (self.__dif + 1)))
 
             # OSC
             if (i >= (self.__ema2 + self.__dif - 1)):
-                self.__result[i][ResultField.IDX_OSC.value] = (self.__tmp_calc_fields[i][CalcField.IDX_DIF.value] -
-                                                               self.__result[i][ResultField.IDX_MACD.value])
+                osc = (self.__tmp_calc_fields[i][CalcField.IDX_DIF.value] -
+                       macd)
+
+            self.__result.append([macd, osc])
+            prev_macd = macd
 
         self.queue.put(
             [RetriveType.DATA, [self.analysis_name(), self.__result]])

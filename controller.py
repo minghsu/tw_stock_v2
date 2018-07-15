@@ -13,10 +13,12 @@ from datetime import datetime
 from utils.utility import util_get_basename
 from analyze.analyzer import Analyer
 
+
 import time
 import commander
 import viewer as viewer
 import logging
+import analyze.exporter as exporter
 
 DEF_MULIT_PROCESS_SELLP_TIMER = 1
 DEF_LENGTH_STOCK_DATA_MESSAGE = 60
@@ -329,7 +331,7 @@ class controller:
                     if self.__symbol == None:
                         self.__state = State.CmdError
                     else:
-                        self.__analyzer.set_data(self.__model.get_stock_data())
+                        self.__analyzer.data = self.__model.get_stock_data()
                         self.__analyzer.run()
                         self.__state = State.Analying
                         viewer.string(self.__update_analysis_info(
@@ -350,5 +352,15 @@ class controller:
                     self.__state = State.Input
                 else:
                     time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
+                break
+            if case(State.CmdExport):
+                if (self.__analyzer != None and
+                        self.__analyzer.is_result_exist()):
+                    exporter.export_analyze_result(
+                        self.__parameter,
+                        self.__analyzer.data,
+                        self.__analyzer.get_plugins(),
+                        self.__analyzer.get_result())
+                    self.__state = State.Input
                 break
         return True

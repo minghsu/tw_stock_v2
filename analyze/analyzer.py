@@ -47,6 +47,10 @@ class Analyer:
         self.__data = arg_data
         self.__share_data = self.__manager.list(arg_data)
 
+    def get_data(self):
+        return self.__data
+    data = property(get_data, set_data)
+
     def run(self):
         self.__mp.clear()
         self.__status.clear()
@@ -65,6 +69,9 @@ class Analyer:
 
         for mp in self.__mp:
             mp.start()
+
+    def is_result_exist(self):
+        return len(self.__result)
 
     def is_alive(self):
         while any(i.is_alive() for i in self.__mp):

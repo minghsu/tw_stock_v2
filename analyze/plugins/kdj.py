@@ -34,7 +34,7 @@ class kdj(Process, BaseAnalyer):
         return "K/D/J"
 
     def colnum_info(self):
-        return (3, ("K", "D", "J"))
+        return ("K", "D", "J")
 
     def get_max_min_value(self, arg_idx):
         ret_max = float(self.__data[arg_idx]
@@ -54,7 +54,7 @@ class kdj(Process, BaseAnalyer):
         time.sleep(DEF_SLEEP_TIMER)
 
         # K, D, J
-        self.__result = [[0, 0, 0]] * len(self.__data)
+        self.__result = []
 
         k_val = 0
         d_val = 0
@@ -62,9 +62,9 @@ class kdj(Process, BaseAnalyer):
             last_k_val = k_val
             last_d_val = d_val
             if (i < self.__fast_k_period - 1):
-                self.queue.put([RetriveType.DATA, [None, None, None]])
+                self.__result.append([0, 0, 0])
             elif (i == self.__fast_k_period - 1):
-                self.queue.put([RetriveType.DATA, [50, 50, 50]])
+                self.__result.append([50, 50, 50])
                 k_val = 50
                 d_val = 50
             else:

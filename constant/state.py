@@ -44,3 +44,5 @@ class State(Enum):
     CmdFetch = 17
     # Analying
     Analying = 18
+    # Export
+    CmdExport = 19
