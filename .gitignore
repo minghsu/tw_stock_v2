@@ -3,3 +3,4 @@ configuration.xml
 .DS_Store
 .vscode
 logfile
+.pyc

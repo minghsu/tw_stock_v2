@@ -14,8 +14,9 @@ class Analyer:
         self.__mp = []
         self.__manager = Manager()
         self.__share_data = self.__manager.list()
-        self.__queue_result = Queue()
+        self.__queue = Queue()
         self.__status = []
+        self.__result = []
 
         tmpList = os.listdir("analyze/plugins/")
         for filename in tmpList:
@@ -28,16 +29,19 @@ class Analyer:
                 self.__plugins.append(
                     [name, instanceClass.analysis_name(), instanceClass.colnum_info(), True])
 
-    def get_plugins(self):
-        retPlugins = ""
+    def get_supported_plugins(self):
+        retSupported = ""
         for plugins in self.__plugins:
-            if retPlugins != "":
-                retPlugins = retPlugins + ", "
+            if retSupported != "":
+                retSupported = retSupported + ", "
 
-            retPlugins = retPlugins + \
+            retSupported = retSupported + \
                 plugins[AnalyzeFieldIdx.IDX_ANALYE_NAME.value]
 
-        return retPlugins
+        return retSupported
+
+    def get_plugins(self):
+        return self.__plugins
 
     def set_data(self, arg_data):
         self.__data = arg_data
@@ -46,6 +50,7 @@ class Analyer:
     def run(self):
         self.__mp.clear()
         self.__status.clear()
+        self.__result.clear()
         i = 0
         for plugins in self.__plugins:
             if plugins[AnalyzeFieldIdx.IDX_IS_EXECUTE.value]:
@@ -53,7 +58,7 @@ class Analyer:
                 plugins_class = __import__(
                     "analyze.plugins.%s" % (name), fromlist=[name])
                 self.__mp.append(getattr(plugins_class, name)(
-                    self.__data, self.__queue_result))
+                    self.__data, self.__queue))
                 self.__status.append(
                     [plugins[AnalyzeFieldIdx.IDX_ANALYE_NAME.value], Info.INFO_CALCULATING])
                 i += 1
@@ -68,13 +73,13 @@ class Analyer:
         return False
 
     def is_queue_empty(self):
-        return self.__queue_result.empty()
+        return self.__queue.empty()
 
     def retrive_data(self):
-        while not self.__queue_result.empty():
-            dataItem = self.__queue_result.get()
+        while not self.__queue.empty():
+            dataItem = self.__queue.get()
             if (dataItem[0] == RetriveType.DATA):
-                self.__queue_result.put(dataItem[1])
+                self.__result.append(dataItem[1])
             elif (dataItem[0] == RetriveType.INFO):
                 for i in range(len(self.__status)):
                     if (self.__status[i][0] == dataItem[1][0]):
@@ -85,3 +90,13 @@ class Analyer:
 
     def get_status(self):
         return self.__status
+
+    def get_column_info(self, arg_name):
+        for plugin in self.__plugins:
+            if plugin[AnalyzeFieldIdx.IDX_ANALYE_NAME.value] == arg_name:
+                return plugin[AnalyzeFieldIdx.IDX_COLUMN_INFO.value]
+
+        return None
+
+    def get_result(self):
+        return self.__result

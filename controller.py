@@ -34,6 +34,7 @@ class controller:
         self.__symbol = None
         self.__logging = logging.getLogger(util_get_basename(__file__))
         self.__analyzer = None
+        self.__analyze_result = []
 
     def __update_symbol_use_info(self):
         last_trade_date = self.__model.get_stock_last_trade_date()
@@ -321,7 +322,7 @@ class controller:
                 if self.__parameter == "?":
                     viewer.empty_string()
                     viewer.string(self.__strFactory.get_string(
-                        'STR_STOCK_ANALYSIS_SUPPORTED') % (self.__analyzer.get_plugins()))
+                        'STR_STOCK_ANALYSIS_SUPPORTED') % (self.__analyzer.get_supported_plugins()))
                     viewer.empty_string()
                     self.__state = State.Input
                 else:

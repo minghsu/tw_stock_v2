@@ -33,14 +33,13 @@ DICT_STR_RESOURCE = {
     "STR_SYMBOL_UPDATED": "The stock symbol already updated, there are %d stock symbols.",
     "STR_HELP_MESSAGE": ("The help information of TW STOCK in the interaction mode:\n"
                          "Type: help > Show this help information\n"
-                         "      show > Display some system information\n"
                          "      exit > Exit\n"
                          "      config > Re-configuration the database connection info."
                          "      use [symbol] > Set to use withc stock symbol\n"
                          "      fetch > Fetch the historical closing information\n"
-                         "      analyze > Display all supported technical analysis and current setting\n"
-                         "      add [type] > Set which technical analysis will be execute.\n"
-                         "      remove[type] > Remove exist technical analysis.\n"),
+                         "      analyze ?> Display all supported technical analysis\n"
+                         "      analyze > Start to execute the technical analysis.\n"
+                         "      export [file name] > Export the analysis result to .csv file.\n"),
     "STR_SYMBOL_NOT_FOUND": "Can't found the %s stock symbol ...",
     "STR_SYMBOL_INFO": " >>> Symbol: %s, Name: %s, Listed Date: %s, Last Update: %s, Total Trade Count: %d, Last Trade Date: %s",
     "STR_SYMBOL_REQUEST_TIMEOUT": "Download request timeout.",

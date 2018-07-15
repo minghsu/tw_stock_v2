@@ -137,6 +137,7 @@ class macd(Process, BaseAnalyer):
                 self.__result[i][ResultField.IDX_OSC.value] = (self.__tmp_calc_fields[i][CalcField.IDX_DIF.value] -
                                                                self.__result[i][ResultField.IDX_MACD.value])
 
-        self.queue.put([RetriveType.DATA, [self.name, self.__result]])
+        self.queue.put(
+            [RetriveType.DATA, [self.analysis_name(), self.__result]])
         self.queue.put(
             [RetriveType.INFO, [self.analysis_name(), Info.INFO_CALCULATED]])

@@ -32,14 +32,13 @@ DICT_STR_RESOURCE = {
     "STR_SYMBOL_UPDATED": "股票代號更新完成, 共有 %d 筆股票代號",
     "STR_HELP_MESSAGE": ("TW STOCK 命令交談模式幫助資訊:\n"
                          "輸入: help > 顯示幫助資訊\n"
-                         "      show > 顯示系統, 資料庫等基本資訊\n"
                          "      exit > 離開系統\n"
                          "      config > 重新設定資料庫連線資訊\n"
-                         "      use [symbol] > 指定股票代號\n"
+                         "      use [股票代號] > 指定股票代號\n"
                          "      fetch > 下載股票收盤資料\n"
-                         "      analyze > 顯示已支援的技術分析, 以及目前已設定的狀態\n"
-                         "      add [analyze type] > 設定要執行的技術分析\n"
-                         "      remove [analyze type] > 移除要執行的技術分析"),
+                         "      analyze ?> 顯示已支援的技術分析\n"
+                         "      analyze > 執行技術分析\n"
+                         "      export [檔名] > 輸出分析計算結果至 .csv 檔"),
     "STR_SYMBOL_NOT_FOUND": "查無 %s 股票代號 ...",
     "STR_SYMBOL_INFO": " >>> 代號: %s, 名稱: %s, 上市日期: %s, 最後更新: %s, 交易總筆數: %d, 最後交易日: %s",
     "STR_SYMBOL_REQUEST_TIMEOUT": "連線要求逾時 ...",

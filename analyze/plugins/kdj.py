@@ -14,6 +14,7 @@ class kdj(Process, BaseAnalyer):
         super(kdj, self).__init__()
         self.__data = arg_share_data
         self.queue = arg_queue
+        self.__result = []
 
         # default parameters
         self.__fast_k_period = 9
@@ -52,6 +53,9 @@ class kdj(Process, BaseAnalyer):
     def run(self):
         time.sleep(DEF_SLEEP_TIMER)
 
+        # K, D, J
+        self.__result = [[0, 0, 0]] * len(self.__data)
+
         k_val = 0
         d_val = 0
         for i in range(len(self.__data)):
@@ -73,7 +77,9 @@ class kdj(Process, BaseAnalyer):
                 d_val = float('%.2f' % ((1/self.__slow_d_period) *
                                         k_val + (2/self.__slow_d_period) * last_d_val))
                 j_val = float('%.2f' % ((d_val*3) - (k_val*2)))
-                self.queue.put([RetriveType.DATA, [k_val, d_val, j_val]])
+                self.__result.append([k_val, d_val, j_val])
 
+        self.queue.put(
+            [RetriveType.DATA, [self.analysis_name(), self.__result]])
         self.queue.put(
             [RetriveType.INFO, [self.analysis_name(), Info.INFO_CALCULATED]])
