@@ -340,15 +340,15 @@ class controller:
                 break
             if case(State.Analying):
                 self.__analyzer.retrive_data()
-                viewer.move_cursor_up(self.__analyzer.get_plugins_count())
-                viewer.string(self.__update_analysis_info(
-                    self.__analyzer.get_status()))
+                # viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                # viewer.string(self.__update_analysis_info(
+                #    self.__analyzer.get_status()))
 
                 if (self.__analyzer.is_alive() == False and
                         self.__analyzer.is_queue_empty()):
-                    viewer.move_cursor_up(self.__analyzer.get_plugins_count())
-                    viewer.string(self.__update_analysis_info(
-                        self.__analyzer.get_status()))
+                    # viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                    # viewer.string(self.__update_analysis_info(
+                    #    self.__analyzer.get_status()))
                     self.__state = State.Input
                 else:
                     time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)

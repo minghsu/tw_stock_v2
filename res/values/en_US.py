@@ -39,7 +39,7 @@ DICT_STR_RESOURCE = {
                          "      fetch > Fetch the historical closing information\n"
                          "      analyze ?> Display all supported technical analysis\n"
                          "      analyze > Start to execute the technical analysis.\n"
-                         "      export [file name] > Export the analysis result to .csv file.\n"),
+                         "      export [file name] > Export the analysis result to CSV format file.\n"),
     "STR_SYMBOL_NOT_FOUND": "Can't found the %s stock symbol ...",
     "STR_SYMBOL_INFO": " >>> Symbol: %s, Name: %s, Listed Date: %s, Last Update: %s, Total Trade Count: %d, Last Trade Date: %s",
     "STR_SYMBOL_REQUEST_TIMEOUT": "Download request timeout.",
