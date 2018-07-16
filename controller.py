@@ -340,15 +340,15 @@ class controller:
                 break
             if case(State.Analying):
                 self.__analyzer.retrive_data()
-                # viewer.move_cursor_up(self.__analyzer.get_plugins_count())
-                # viewer.string(self.__update_analysis_info(
-                #    self.__analyzer.get_status()))
+                viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                viewer.string(self.__update_analysis_info(
+                    self.__analyzer.get_status()))
 
                 if (self.__analyzer.is_alive() == False and
                         self.__analyzer.is_queue_empty()):
-                    # viewer.move_cursor_up(self.__analyzer.get_plugins_count())
-                    # viewer.string(self.__update_analysis_info(
-                    #    self.__analyzer.get_status()))
+                    viewer.move_cursor_up(self.__analyzer.get_plugins_count())
+                    viewer.string(self.__update_analysis_info(
+                        self.__analyzer.get_status()))
                     self.__state = State.Input
                 else:
                     time.sleep(DEF_MULIT_PROCESS_SELLP_TIMER)
@@ -356,11 +356,16 @@ class controller:
             if case(State.CmdExport):
                 if (self.__analyzer != None and
                         self.__analyzer.is_result_exist()):
-                    exporter.export_analyze_result(
-                        self.__parameter,
-                        self.__analyzer.data,
-                        self.__analyzer.get_plugins(),
-                        self.__analyzer.get_result())
+                    if exporter.export_analyze_result(
+                            self.__parameter,
+                            self.__analyzer.data,
+                            self.__analyzer.get_plugins(),
+                            self.__analyzer.get_result()):
+                        viewer.bold_string(self.__strFactory.get_string(
+                            'STR_EXPORT_OK') % (self.__parameter))
+                    else:
+                        viewer.bold_string(self.__strFactory.get_string(
+                            'STR_EXPORT_FAIL') % (self.__parameter))
                     self.__state = State.Input
                 break
         return True

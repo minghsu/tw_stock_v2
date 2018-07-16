@@ -50,4 +50,6 @@ DICT_STR_RESOURCE = {
     "STR_STOCK_ANALYSIS_SUPPORTED": "Supported stock analysis: %s",
     "STR_CALCULATING": "Calculating ...",
     "STR_CALCULATED": "Calculated !",
+    "STR_EXPORT_OK": "The %s file export success.",
+    "STR_EXPORT_FAIL": "The %s file export fail. !",
 }

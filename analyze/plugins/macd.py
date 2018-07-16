@@ -33,7 +33,6 @@ class macd(Process, BaseAnalyer):
         self.__data = arg_share_data
         self.queue = arg_queue
         self.__tmp_calc_fields = []
-        self.__result = []
 
         # default parameters
         self.__ema1 = 12
@@ -78,9 +77,6 @@ class macd(Process, BaseAnalyer):
     def get_macd(self, arg_idx):
         ret_macd = float("%.2f" % (((self.__df_result[ResultField.IDX_MACD.value].values[arg_idx - 1] * (self.__dif - 1)) +
                                     (self.__df_calculate[CalcField.IDX_DIF.value].values[arg_idx]*2)) / (self.__dif + 1)))
-
-        print("DEBUG: %d, %.2f, %.2f" % (arg_idx,
-                                         self.__df_result[ResultField.IDX_MACD.value].values[arg_idx - 1], self.__df_calculate[CalcField.IDX_DIF.value].values[arg_idx]))
 
         return ret_macd
 
@@ -136,15 +132,9 @@ class macd(Process, BaseAnalyer):
             if (i >= (self.__ema2 + self.__dif - 1)):
                 self.__df_result.iloc[[i], [ResultField.IDX_OSC.value]] = float("%.2f" % (self.__df_calculate[CalcField.IDX_DIF.value].values[i] -
                                                                                           self.__df_result[ResultField.IDX_MACD.value].values[i]))
+        self.__df_result.columns = self.colnum_info()
 
         self.queue.put(
-            [RetriveType.DATA, [self.analysis_name(), self.__result]])
+            [RetriveType.DATA, self.__df_result])
         self.queue.put(
             [RetriveType.INFO, [self.analysis_name(), Info.INFO_CALCULATED]])
-
-        self.__df_result.columns = self.colnum_info()
-        self.__df_calculate.columns = ["DI", "EMA1", "EMA2", "DIF"]
-
-        df = pd.concat([self.__df_calculate, self.__df_result], axis=1)
-
-        print(df)

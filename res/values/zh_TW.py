@@ -49,4 +49,6 @@ DICT_STR_RESOURCE = {
     "STR_STOCK_ANALYSIS_SUPPORTED": "支持的技術分析: %s",
     "STR_CALCULATING": "正在計算中 ...",
     "STR_CALCULATED": "已計算完成",
+    "STR_EXPORT_OK": "匯出 %s 檔案成功",
+    "STR_EXPORT_FAIL": "匯出 %s 檔案失敗",
 }
