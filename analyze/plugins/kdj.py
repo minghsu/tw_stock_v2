@@ -8,8 +8,6 @@ from enum import Enum, unique
 from pandas.core.frame import DataFrame
 
 import pandas as pd
-import time
-DEF_SLEEP_TIMER = 5
 
 
 @unique
@@ -60,7 +58,7 @@ class kdj(Process, BaseAnalyer):
         return (ret_max, ret_min)
 
     def run(self):
-        time.sleep(DEF_SLEEP_TIMER)
+        super(kdj, self).delay()
 
         # K, D, J
         self.__df_result = DataFrame([[0, 0, 0]] * len(self.__data))

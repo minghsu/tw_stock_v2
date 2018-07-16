@@ -356,16 +356,18 @@ class controller:
             if case(State.CmdExport):
                 if (self.__analyzer != None and
                         self.__analyzer.is_result_exist()):
-                    if exporter.export_analyze_result(
-                            self.__parameter,
-                            self.__analyzer.data,
-                            self.__analyzer.get_plugins(),
-                            self.__analyzer.get_result()):
+                    export_file_name = exporter.export_analyze_result(
+                        self.__symbol,
+                        self.__analyzer.data,
+                        self.__analyzer.get_plugins(),
+                        self.__analyzer.get_result())
+
+                    if export_file_name != None:
                         viewer.bold_string(self.__strFactory.get_string(
-                            'STR_EXPORT_OK') % (self.__parameter))
+                            'STR_EXPORT_OK') % (export_file_name))
                     else:
-                        viewer.bold_string(self.__strFactory.get_string(
-                            'STR_EXPORT_FAIL') % (self.__parameter))
+                        viewer.bold_string(
+                            self.__strFactory.get_string('STR_EXPORT_FAIL'))
                     self.__state = State.Input
                 break
         return True

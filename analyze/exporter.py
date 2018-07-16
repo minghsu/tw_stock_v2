@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 from constant.analysis import AnalyzeFieldIdx
 from pandas.core.frame import DataFrame
+from datetime import datetime
 import pandas as pd
 import os
 
@@ -11,7 +12,7 @@ DEF_STOCK_COULMN_NAME = ["Date", "Volumn", "Money", "Open",
 DEF_EXPORT_FOLDER_NAME = "exportfile"
 
 
-def export_analyze_result(arg_filename, arg_data, arg_plugins, arg_result):
+def export_analyze_result(arg_symbol, arg_data, arg_plugins, arg_result):
     if not os.path.exists(DEF_EXPORT_FOLDER_NAME):
         os.makedirs(DEF_EXPORT_FOLDER_NAME)
 
@@ -24,10 +25,12 @@ def export_analyze_result(arg_filename, arg_data, arg_plugins, arg_result):
 
     df = pd.concat(result_data, axis=1)
 
-    try:
-        df.to_csv(DEF_EXPORT_FOLDER_NAME + os.sep +
-                  arg_filename, sep=',', encoding='utf-8')
-    except:
-        return False
+    filename = datetime.today().strftime(arg_symbol + "_%Y%m%d-%H%M%S.csv")
 
-    return True
+    try:
+        df.to_csv(DEF_EXPORT_FOLDER_NAME +
+                  os.sep + filename, sep=',', encoding='utf-8')
+    except:
+        return None
+
+    return filename

@@ -36,8 +36,6 @@ def cmdParser(argCommand):
                 retParameter = splitCmd[1]
             break
         if case("export"):
-            if (len(splitCmd) > 1):
-                retParameter = splitCmd[1]
-                retState = State.CmdExport
+            retState = State.CmdExport
             break
     return (retState, retParameter)

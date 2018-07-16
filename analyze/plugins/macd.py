@@ -9,10 +9,6 @@ from pandas.core.frame import DataFrame
 import pandas as pd
 
 
-import time
-DEF_SLEEP_TIMER = 5
-
-
 @unique
 class CalcField(Enum):
     IDX_DI = 0
@@ -81,7 +77,7 @@ class macd(Process, BaseAnalyer):
         return ret_macd
 
     def run(self):
-        time.sleep(DEF_SLEEP_TIMER)
+        super(macd, self).delay()
 
         # MACD, OSC
         self.__df_result = DataFrame([[0, 0]] * len(self.__data))

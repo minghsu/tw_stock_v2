@@ -38,7 +38,7 @@ DICT_STR_RESOURCE = {
                          "      fetch > 下載股票收盤資料\n"
                          "      analyze ?> 顯示已支援的技術分析\n"
                          "      analyze > 執行技術分析\n"
-                         "      export [檔名] > 輸出分析計算結果至 csv 格式檔案"),
+                         "      export > 輸出分析計算結果至 csv 格式檔案"),
     "STR_SYMBOL_NOT_FOUND": "查無 %s 股票代號 ...",
     "STR_SYMBOL_INFO": " >>> 代號: %s, 名稱: %s, 上市日期: %s, 最後更新: %s, 交易總筆數: %d, 最後交易日: %s",
     "STR_SYMBOL_REQUEST_TIMEOUT": "連線要求逾時 ...",
@@ -49,6 +49,6 @@ DICT_STR_RESOURCE = {
     "STR_STOCK_ANALYSIS_SUPPORTED": "支持的技術分析: %s",
     "STR_CALCULATING": "正在計算中 ...",
     "STR_CALCULATED": "已計算完成",
-    "STR_EXPORT_OK": "匯出 %s 檔案成功",
-    "STR_EXPORT_FAIL": "匯出 %s 檔案失敗",
+    "STR_EXPORT_OK": " >>> 匯出 %s 檔案成功",
+    "STR_EXPORT_FAIL": " >>> 匯出檔案失敗",
 }

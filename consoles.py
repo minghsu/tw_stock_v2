@@ -10,7 +10,7 @@ class consoles:
         self.__used = self.__resString.get_string('STR_CLI_NONE')
 
     def getCommand(self):
-        return input(self.__resString.get_string('STR_CLI_PREFIX') % (self.__used) + DEF_CONSOLES_SUFFIX)
+        return input(self.__resString.get_string('STR_CLI_PREFIX') % (self.__used) + DEF_CONSOLES_SUFFIX).strip()
 
     def getValue(self, arg_string, arg_min, arg_max):
         num = 0
@@ -42,7 +42,7 @@ class consoles:
                 retString = arg_def_string
                 break
 
-        return retString
+        return retString.strip()
 
     def get_confirm(self, arg_string, arg_def_value):
         nRet = arg_def_value
