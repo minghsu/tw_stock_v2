@@ -356,11 +356,8 @@ class controller:
             if case(State.CmdExport):
                 if (self.__analyzer != None and
                         self.__analyzer.is_result_exist()):
-                    export_file_name = exporter.export_analyze_result(
-                        self.__symbol,
-                        self.__analyzer.data,
-                        self.__analyzer.get_plugins(),
-                        self.__analyzer.get_result())
+                    export_file_name = self.__analyzer.export_analyze_result(
+                        self.__symbol)
 
                     if export_file_name != None:
                         viewer.bold_string(self.__strFactory.get_string(
