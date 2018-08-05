@@ -18,7 +18,6 @@ import time
 import commander
 import viewer as viewer
 import logging
-import analyze.exporter as exporter
 
 DEF_MULIT_PROCESS_SELLP_TIMER = 1
 DEF_LENGTH_STOCK_DATA_MESSAGE = 60
