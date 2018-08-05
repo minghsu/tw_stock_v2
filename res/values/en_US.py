@@ -13,13 +13,13 @@ DICT_STR_RESOURCE = {
     "STR_CONFIG_DATABASE": ("The database connection info is configurating.\n"
                             "Please follow the indicate to provide the HOST, ID & PW info.\n"
                             "Please confirm the ID have the CREATE DATABASE/TABLE permissions.\n"
-                            "PS. The LOGIN info were store in XML file.\n"),
+                            "PS. The LOGIN info were stored to 'configuration.xml' file.\n"),
     "STR_DB_SUPPORT_LIST": "System detected below DB packages for Python:",
     "STR_DB_SELECT": "Pleass select which DB system will be use?",
     "STR_DB_NOT_DETECTED": "System can't detect the database pacakges!!",
-    "STR_DB_HOST": "Please input the DB host address:",
-    "STR_DB_ID": "Please input the ID:",
-    "STR_DB_PW": "Please input the PW:",
+    "STR_DB_HOST": "Please input the DB host address%s:",
+    "STR_DB_ID": "Please input the ID%s:",
+    "STR_DB_PW": "Please input the PW%s:",
     "STR_DB_CONF_SAVE_ERROR": "Can't save the configuration of database!",
     "STR_DB_RE_CONFIG": "Do you want to re-configure the database connect info?",
     "STR_DB_CONNECTED": "%s database connected",
