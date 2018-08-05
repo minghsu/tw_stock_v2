@@ -34,7 +34,7 @@ DICT_STR_RESOURCE = {
     "STR_HELP_MESSAGE": ("The help information of TW STOCK in the interaction mode:\n"
                          "Type: help > Show this help information\n"
                          "      exit > Exit\n"
-                         "      config > Re-configuration the database connection info."
+                         "      config > Re-configuration the database connection info.\n"
                          "      use [symbol] > Set to use withc stock symbol\n"
                          "      fetch > Fetch the historical closing information\n"
                          "      analyze ?> Display all supported technical analysis\n"
