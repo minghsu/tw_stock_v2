@@ -1,14 +1,16 @@
 # TW STOCK V2.0
-This is a practice project of Python with some OO & Design Pattern concept, included below expected features:
+This is a practice project of Python with some immature concepts of MVC, OO & design pattern.
 
-- Support MacOS/Linux platform.
-- Multiple language (included "zh_TW" & "en_US") support with expandable mechanism.
-- Supported MariabDB/MySQL & PostgreSQL RMDBs, and able to customize with other RMDB engine.
+The system included below features:
+- Command interactive mode
+- Auto detected locale for language
+- Auto detected which “RMDB” python packages installed
+- Parallel take “LIST” & “OTC” stock symbols from TWSE website
+- Fetch “stock data” by symbol from TWSE website
+- Parallel calculate all technical analysis
+- Extendable mechanism for “Language”, “RMDB service” & “Stock Tech Analysis”
+- Export tech analysis result to .CSV file
 
-For more detail, will have specific document soon.
-
-PS. In my Mac OS environment, I have occurs two crash issue.
-
-Please add below variable in your system environment
-- export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-- export no_proxy='*'
+For more detail, please refer below documents.
+- User Guide: [TW STOCK V2 User Guide](https://github.com/minghsu/tw_stock_v2/blob/master/doc/TW_STOCK_V2%20_User_Guide.pdf)
+- Tech Note: Not available
