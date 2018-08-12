@@ -13,4 +13,4 @@ The system included below features:
 
 For more detail, please refer below documents.
 - User Guide: [TW STOCK V2 User Guide](https://github.com/minghsu/tw_stock_v2/blob/master/doc/TW_STOCK_V2%20_User_Guide.pdf)
-- Tech Note: Not available
+- Tech Note: Coming soon ...
