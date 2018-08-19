@@ -365,5 +365,7 @@ class controller:
                         viewer.bold_string(
                             self.__strFactory.get_string('STR_EXPORT_FAIL'))
                     self.__state = State.Input
+                else:
+                    self.__state = State.CmdError
                 break
         return True

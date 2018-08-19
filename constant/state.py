@@ -20,29 +20,25 @@ class State(Enum):
     Fetching = 5
     # Stock analyzing ( Ex: KDJ, MACD, etc )
     Analyze = 6
-    # Export the analyzed result
-    Export = 7
     # Check DB Configurations
-    DbCheck = 8
+    DbCheck = 7
     # Exit
-    Exit = 9
+    Exit = 8
     # Re-Config DB
-    Reconfigure = 10
+    Reconfigure = 9
     # Open Database
-    Open = 11
+    Open = 10
     # Updating the stock symbol
-    Updating = 12
-    # Downloading the stock symbol data
-    Downloading = 13
+    Updating = 11
     # show help message
-    CmdHelp = 14
+    CmdHelp = 12
     # command error
-    CmdError = 15
+    CmdError = 13
     # use command
-    CmdUse = 16
+    CmdUse = 14
     # fetch command
-    CmdFetch = 17
+    CmdFetch = 15
     # Analying
-    Analying = 18
+    Analying = 16
     # Export
-    CmdExport = 19
+    CmdExport = 17
