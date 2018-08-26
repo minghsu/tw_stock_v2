@@ -12,5 +12,5 @@ The system included below features:
 - Export tech analysis result to .CSV file
 
 For more detail, please refer below documents.
-- User Guide: [TW STOCK V2 User Guide](https://github.com/minghsu/tw_stock_v2/blob/master/doc/TW_STOCK_V2%20_User_Guide.pdf)
-- Tech Note: Coming soon ...
+- User Guide: [TW STOCK V2 User Guide](https://github.com/minghsu/tw_stock_v2/blob/master/doc/TW_STOCK_V2_User_Guide.pdf)
+- Tech Note: [TW STOCK V2 Tech Note](https://github.com/minghsu/tw_stock_v2/blob/master/doc/TW_STOCK_V2_Tech_Note.pdf)
