@@ -48,6 +48,9 @@ class rsi(Process, BaseAnalyer):
         up_val = float("%.2f" % (up_val/self.__rsi_period))
         down_val = float("%.2f" % (down_val/self.__rsi_period))
 
+        if up_val == 0 or down_val == 0:
+            return 0
+
         return float("%.2f" % (100 * up_val/(up_val+down_val)))
 
     def run(self):
