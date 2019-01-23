@@ -84,10 +84,6 @@ class controller:
     def __updating_stock_data_message(self, arg_status):
         retStatus = ""
 
-        print ("DEBUG START")
-        print (arg_status)
-        print ("DEBUG STOP")
-
         for status in arg_status:
             if (status[1] == Info.INFO_STOCK_DATA_DOWNLOAD_TIMEOUT):
                 tmp = self.__strFactory.get_string(Info.INFO_STOCK_DATA_DOWNLOAD_TIMEOUT.value) % (
