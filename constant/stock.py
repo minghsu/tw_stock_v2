@@ -15,6 +15,7 @@ class StockDB(Enum):
 class RetriveType(Enum):
     DATA = 0
     INFO = 1
+    ERROR = 2
 
 
 @unique

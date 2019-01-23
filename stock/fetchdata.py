@@ -76,5 +76,5 @@ class FetchData(Process):
                     time.sleep(DEF_FETCH_DATA_SLEEP_TIME)
             except:
                 self.__queue.put(
-                    [RetriveType.INFO, [self.__symbol, Info.INFO_STOCK_DATA_DOWNLOAD_TIMEOUT]])
+                    [RetriveType.ERROR, [self.__symbol, Info.INFO_STOCK_DATA_DOWNLOAD_TIMEOUT]])
                 time.sleep(DEF_FETCH_DATA_SLEEP_TIME)

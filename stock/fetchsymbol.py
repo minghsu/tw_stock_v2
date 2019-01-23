@@ -35,7 +35,7 @@ class FetchSymbol(Process):
             url_content = url_response.read()
         except:
             self.__queue.put(
-                [RetriveType.INFO, [self.__type, Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT]])
+                [RetriveType.ERROR, [self.__type, Info.INFO_SYMBOL_DOWNLOAD_TIMEOUT]])
         else:
             url_content = url_content.decode('big5-hkscs').encode('utf-8')
             html_content = etree.HTML(
