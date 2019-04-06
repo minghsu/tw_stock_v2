@@ -13,29 +13,29 @@ def cmdParser(argCommand):
     splitCmd = argCommand.split(" ")
 
     for case in Switch(splitCmd[0]):
-        if case("exit"):
+        if case('exit'):
             retState = State.Exit
             break
-        if case("help"):
+        if case('help'):
             retState = State.CmdHelp
             break
-        if case("config"):
+        if case('config'):
             retState = State.Configure
             break
-        if case("use"):
+        if case('use'):
             if (len(splitCmd) > 1):
                 retParameter = splitCmd[1]
                 retState = State.CmdUse
             break
-        if case("fetch"):
+        if case('fetch'):
             retState = State.CmdFetch
             break
-        if case("analyze"):
+        if case('analyze'):
             retState = State.Analyze
             if (len(splitCmd) > 1):
                 retParameter = splitCmd[1]
             break
-        if case("export"):
+        if case('export'):
             retState = State.CmdExport
             break
     return (retState, retParameter)
